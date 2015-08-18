@@ -1,17 +1,21 @@
 prometheus:
-  image: "prom/prometheus"
+  build: "prom/"
+  ports:
+    - "9090:9090"
   expose:
     - "9090"
-  environment:
-    - "config.file=documentation/examples/prometheus.yml"
+  volumes:
+    - "$PWD/prometheus.yml:/etc/prometheus/prometheus.yml"
+
 exporter:
   image: "prom/container-exporter"
   volumes:
-    - "/sys/fs/cgroup:/cgroup"
-    - "/var/run/docker.sock:/var/run/docker.sock prom/container-exporter"
+    - /sys/fs/cgroup:/cgroup
+    - /var/run/docker.sock:/var/run/docker.sock prom/container-exporter
+  ports:
+    - "9104:9104"
   expose:
     - "9104"
-  command: "-storage_driver=influxdb -storage_driver_db=cadvisor -storage_driver_host=influxsrv:8086"
 
 sqlite3:
   image: "prom/promdash"
@@ -19,16 +23,16 @@ sqlite3:
     - "./bin/rake db:migrate"
   volumes:
     - "/tmp/prom:/tmp/prom"
-
   environment:
     - "DATABASE_URL=sqlite3:/tmp/prom/file.sqlite3"
 
 promdash:
   image: "prom/promdash"
+  ports:
+    - "3000:3000"
   expose:
     - "3000"
   volumes:
-    - "/tmp/prom:/tmp/prom"
-
+    - /tmp/prom:/tmp/prom
   environment:
     - "DATABASE_URL=sqlite3:/tmp/prom/file.sqlite3"
