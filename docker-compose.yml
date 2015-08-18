@@ -1,9 +1,11 @@
 prometheus:
-  build: "/prom/"
+  image: "prom/prometheus"
   expose:
     - "9090"
+  environment:
+    - "config.file=documentation/examples/prometheus.yml"
 exporter:
-  image: "prom/prom_container-exporter"
+  image: "prom/container-exporter"
   volumes:
     - "/sys/fs/cgroup:/cgroup"
     - "/var/run/docker.sock:/var/run/docker.sock prom/container-exporter"
