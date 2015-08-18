@@ -1,0 +1,32 @@
+prometheus:
+  build: "/prom/"
+  expose:
+    - "9090"
+prom_exporter:
+  image: "prom/prom_container-exporter"
+  volumes:
+    - "/sys/fs/cgroup:/cgroup"
+    - "/var/run/docker.sock:/var/run/docker.sock prom/container-exporter"
+  expose:
+    - "9104"
+  command: "-storage_driver=influxdb -storage_driver_db=cadvisor -storage_driver_host=influxsrv:8086"
+
+sqlite3:
+  image: "prom/promdash"
+  command:
+    - "./bin/rake db:migrate"
+  volumes:
+    - "/tmp/prom:/tmp/prom"
+
+  environment:
+    - "DATABASE_URL=sqlite3:/tmp/prom/file.sqlite3"
+
+promdash:
+  image: "prom/promdash"
+  expose:
+    - "3000"
+  volumes:
+    - "/tmp/prom:/tmp/prom"
+
+  environment:
+    - "DATABASE_URL=sqlite3:/tmp/prom/file.sqlite3"
