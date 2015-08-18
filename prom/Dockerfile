@@ -1,23 +1,14 @@
-FROM        sdurrheimer/alpine-glibc
-MAINTAINER  The Prometheus Authors <prometheus-developers@googlegroups.com>
+FROM prom/prometheus:latest
 
-WORKDIR /app
-COPY    . /app
+ADD prometheus.yml /etc/prometheus/prometheus.yml
 
-RUN apk add --update -t build-deps git mercurial bzr make \
-    && make build \
-    && cp prometheus promtool /bin/ \
-    && mkdir -p /etc/prometheus \
-    #&& mv ./documentation/examples/prometheus.yml /etc/prometheus/prometheus.yml \
-    && mv ./console_libraries/ ./consoles/ /etc/prometheus/ \
-    && apk del --purge build-deps \
-    && rm -rf /app /var/cache/apk/*
+RUN mkdir -p /etc/prometheus/targets.d
 
-EXPOSE     9090
-VOLUME     [ "/prometheus" ]
-WORKDIR    /prometheus
+EXPOSE 9090
+
 ENTRYPOINT [ "/bin/prometheus" ]
 CMD        [ "-config.file=/etc/prometheus/prometheus.yml", \
              "-storage.local.path=/prometheus", \
              "-web.console.libraries=/etc/prometheus/console_libraries", \
-             "-web.console.templates=/etc/prometheus/consoles" ]
+             "-web.console.templates=/etc/prometheus/consoles", \
+             "-web.listen-address=:9090" ]

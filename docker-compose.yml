@@ -2,10 +2,7 @@ prometheus:
   build: "prom/"
   ports:
     - "9090:9090"
-  expose:
-    - "9090"
-  volumes:
-    - "$PWD/prometheus.yml:/etc/prometheus/prometheus.yml"
+  container_name: prometheus
 
 exporter:
   image: "prom/container-exporter"
@@ -16,6 +13,7 @@ exporter:
     - "9104:9104"
   expose:
     - "9104"
+  container_name: exporter
 
 sqlite3:
   image: "prom/promdash"
@@ -36,3 +34,4 @@ promdash:
     - /tmp/prom:/tmp/prom
   environment:
     - "DATABASE_URL=sqlite3:/tmp/prom/file.sqlite3"
+  container_name: promdash
