@@ -27,4 +27,4 @@ scrape_configs:
     # scheme defaults to 'http'.
 
     target_groups:
-      - targets: ['localhost:9090','prom_exporter:9104','prom_dash:3000']
+      - targets: ['localhost:9090','exporter:9104','promdash:3000']

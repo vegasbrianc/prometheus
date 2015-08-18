@@ -2,7 +2,7 @@ prometheus:
   build: "/prom/"
   expose:
     - "9090"
-prom_exporter:
+exporter:
   image: "prom/prom_container-exporter"
   volumes:
     - "/sys/fs/cgroup:/cgroup"
