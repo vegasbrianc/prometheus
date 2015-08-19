@@ -22,6 +22,10 @@ Prometheus Dashboard: `http://<Host IP Address>:3000` for example http://192.168
 
 ## Post Configuration
 Now we need to connect the Prometheus Dashboard to the Prometheus installation. Access the Prom Dash as mentioned above. 
+* Click the "Server" Menu at the top
+* Click "New Server"
+* Input desired name, Prometheus server IP and port (`http://<Host IP Address>:9090>` ) and select Prometheus for server type.
+![PromDash New Server](https://github.com/vegasbrianc/prometheus/blob/master/New_server.png)
 
 ## ToDo
 * Integrate and configure Alerting.
