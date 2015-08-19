@@ -25,7 +25,15 @@ Now we need to connect the Prometheus Dashboard to the Prometheus installation. 
 * Click the "Server" Menu at the top
 * Click "New Server"
 * Input desired name, Prometheus server IP and port (`http://<Host IP Address>:9090>` ) and select Prometheus for server type.
+
 ![PromDash New Server](https://github.com/vegasbrianc/prometheus/blob/master/New_server.png)
+
+## Configure Dashboards
+Let's create our first Dashboard. Head over up to the Dashboard menu. First, create a new directory. Next, create a new Dashboard.
+
+Here's a quick Dashboard I put together as an example.
+
+![PromDash Screenshot](https://github.com/vegasbrianc/prometheus/blob/master/Dashboard_example.png)
 
 ## ToDo
 * Integrate and configure Alerting.
