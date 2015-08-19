@@ -16,9 +16,9 @@ Once configurations are done let's start it up. From the /prometheus project dir
 
 The Prometheus stack should now be running. To access the different components:
 
-Prometheus: http://<Host IP Address>:9090 for example http://192.168.10.1:9090
+Prometheus: `http://<Host IP Address:9090>` for example http://192.168.10.1:9090
 
-Prometheus Dashboard: http://<Host IP Address>:3000 for example http://192.168.10.1:3000
+Prometheus Dashboard: `http://<Host IP Address>:3000` for example http://192.168.10.1:3000
 
 ## Post Configuration
 Now we need to connect the Prometheus Dashboard to the Prometheus installation. Access the Prom Dash as mentioned above. 
