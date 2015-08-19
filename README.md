@@ -1,5 +1,5 @@
 ## A Prometheus docker-compose stack
-Here's a quick start to stand-up a [Prometheus](http://prometheus.io/) stack containing Prometheus server, container-exporter, and the Prometheus Dashboard.
+Here's a quick start to stand-up a [Prometheus](http://prometheus.io/) stack containing Prometheus server, container-exporter, and the Prometheus Dashboard to monitor your Docker infrastructure.
 
 ##Pre-requisites
 Before we get started installing the Prometheus stack. Ensure you install [docker-compose](https://docs.docker.com/compose/install/) on your Docker host machine.
