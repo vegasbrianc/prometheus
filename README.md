@@ -37,4 +37,5 @@ Here's a quick Dashboard I put together as an example.
 
 ## ToDo
 * Integrate and configure Alerting.
+* Make a separate stack with just cAdvisor as the metric collection
  
