@@ -35,3 +35,16 @@ promdash:
   environment:
     - "DATABASE_URL=sqlite3:/tmp/prom/file.sqlite3"
   container_name: promdash
+
+cadvisor:
+  image: "google/cadvisor"
+  volumes:
+    - "/:/rootfs:ro"
+    - "/var/run:/var/run:rw"
+    - "/sys:/sys:ro"
+    - "/var/lib/docker/:/var/lib/docker:ro"
+  ports:
+    - "8080:8080"
+  expose:
+    - "8080"
+  container_name: cadvisor
