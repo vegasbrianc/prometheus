@@ -8,7 +8,7 @@ exporter:
   image: "prom/container-exporter"
   volumes:
     - /sys/fs/cgroup:/cgroup
-    - /var/run/docker.sock:/var/run/docker.sock prom/container-exporter
+    - /var/run/docker.sock:/var/run/docker.sock
   ports:
     - "9104:9104"
   expose:
