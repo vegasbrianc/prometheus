@@ -3,6 +3,9 @@ prometheus:
   ports:
     - "9090:9090"
   container_name: prometheus
+  links:
+    - "exporter:export"
+    - "cadvisor:cad"
 
 exporter:
   image: "prom/container-exporter"
