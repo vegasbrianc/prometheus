@@ -2,10 +2,10 @@ prometheus:
   build: "prom/"
   ports:
     - "9090:9090"
-  container_name: prometheus
+  name: prometheus
   links:
     - "exporter:export"
-    - "cadvisor:cad"
+    - "cadvisor:cadvisor"
 
 exporter:
   image: "prom/container-exporter"
@@ -16,7 +16,7 @@ exporter:
     - "9104:9104"
   expose:
     - "9104"
-  container_name: exporter
+  name: exporter
 
 sqlite3:
   image: "prom/promdash"
@@ -37,7 +37,7 @@ promdash:
     - /tmp/prom:/tmp/prom
   environment:
     - "DATABASE_URL=sqlite3:/tmp/prom/file.sqlite3"
-  container_name: promdash
+  name: "promdash"
 
 cadvisor:
   image: "google/cadvisor"
@@ -50,4 +50,4 @@ cadvisor:
     - "8080:8080"
   expose:
     - "8080"
-  container_name: cadvisor
+  name: "cadvisor"
