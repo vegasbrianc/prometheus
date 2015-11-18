@@ -37,7 +37,11 @@ promdash:
     - /tmp/prom:/tmp/prom
   environment:
     - "DATABASE_URL=sqlite3:/tmp/prom/file.sqlite3"
+<<<<<<< HEAD
   name: "promdash"
+=======
+  name: promdash
+>>>>>>> 8fd61f32ac17388fe8505e41ddbd2fb91babe945
 
 cadvisor:
   image: "google/cadvisor"
@@ -50,4 +54,8 @@ cadvisor:
     - "8080:8080"
   expose:
     - "8080"
+<<<<<<< HEAD
   name: "cadvisor"
+=======
+  name: cadvisor
+>>>>>>> 8fd61f32ac17388fe8505e41ddbd2fb91babe945
