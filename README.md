@@ -33,6 +33,9 @@ Let's create our first Dashboard. Head over up to the Dashboard menu. First, cre
 
 Here's a quick Dashboard I put together as an example.
 
+## Sample Dashboard Queries
+The queries used in the example dashboard are located here - [Dashboard Queries](https://github.com/vegasbrianc/prometheus/blob/master/dashboard_queries.txt)
+
 ![PromDash Screenshot](https://github.com/vegasbrianc/prometheus/blob/master/Dashboard_example.png)
 
 ## ToDo
