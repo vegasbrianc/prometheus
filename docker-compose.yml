@@ -1,5 +1,5 @@
 prometheus:
-  build: "prom/"
+  image: "vegasbrianc/prom"
   ports:
     - "9090:9090"
   links:
