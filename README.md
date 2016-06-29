@@ -7,7 +7,7 @@ Before we get started installing the Prometheus stack. Ensure you install [docke
 ##Installation & Configuration
 Clone the project locally to your Docker host. 
 
-If you would like to change which targets should be monitored or make configuration changes edit the [/prom/prometheus.yml](https://github.com/vegasbrianc/prometheus/blob/master/prom/prometheus.yml#L30) file. The targets section. The targets section is where you define which componets(data exporters) should be monitored by Prometheus. The names defined in this file are actually sourced from the service name in the docker-compose file. If you wish to change names of the services change the "container_name" parameter in the docker-compose.yml file. 
+If you would like to change which targets should be monitored or make configuration changes edit the [/prom/prometheus.yml](https://github.com/vegasbrianc/prometheus/blob/master/prom/prometheus.yml#L30) file. The targets section. The targets section is where you define which components (data exporters) should be monitored by Prometheus. The names defined in this file are actually sourced from the service name in the docker-compose file. If you wish to change names of the services change the "container_name" parameter in the `docker-compose.yml` file. 
 
 Once configurations are done let's start it up. From the /prometheus project directory run the following commands:
 
