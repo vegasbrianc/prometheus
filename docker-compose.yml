@@ -33,7 +33,7 @@ services:
     expose:
       - 8080
   grafana:
-    image: grafana/grafana:3.0.4
+    image: grafana/grafana
     depends_on:
       - prometheus
     ports:
