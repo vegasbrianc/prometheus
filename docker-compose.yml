@@ -1,65 +1,44 @@
-prometheus:
-  image: "vegasbrianc/prom"
-  ports:
-    - "9090:9090"
-  links:
-    - "exporter:export"
-    - "cadvisor:cadvisor"
-  labels: 
-         - "name=prometheus"
-         - "description=Core of Promethues"
-         - "version=0.16.1"
+version: '2'
 
-exporter:
-  image: "prom/container-exporter"
-  volumes:
-    - /sys/fs/cgroup:/cgroup
-    - /var/run/docker.sock:/var/run/docker.sock
-  ports:
-    - "9104:9104"
-  expose:
-    - "9104"
-  labels: 
-    - "name=exporter"
-    - "description=Exports prom data"
-    - "version=latest"
+volumes:
+    prometheus_data: {}
+    grafana_data: {}
 
-sqlite3:
-  image: "prom/promdash"
-  command:
-    - "./bin/rake db:migrate"
-  volumes:
-    - "/tmp/prom:/tmp/prom"
-  environment:
-    - "DATABASE_URL=sqlite3:/tmp/prom/file.sqlite3"
-
-promdash:
-  image: "prom/promdash"
-  ports:
-    - "3000:3000"
-  expose:
-    - "3000"
-  volumes:
-    - /tmp/prom:/tmp/prom
-  environment:
-    - "DATABASE_URL=sqlite3:/tmp/prom/file.sqlite3"
-  labels: 
-    - "name=prom dashboard"
-    - "description=Dashboards for metrics"
-    - "version=latest"
-
-cadvisor:
-  image: "google/cadvisor"
-  volumes:
-    - "/:/rootfs:ro"
-    - "/var/run:/var/run:rw"
-    - "/sys:/sys:ro"
-    - "/var/lib/docker/:/var/lib/docker:ro"
-  ports:
-    - "8080:8080"
-  expose:
-    - "8080"
-  labels: 
-    - "name=cAdvisor"
-    - "description=Google Container Advisor collects metrics from host and containers"
-    - "version=latest"
+services:
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '-config.file=/etc/prometheus/prometheus.yml'
+      - '-storage.local.path=/prometheus'
+    expose:
+      - 9090
+    links:
+      - cadvisor:cadvisor
+    depends_on:
+      - cadvisor
+  node-exporter:
+    image: prom/node-exporter
+    expose:
+      - 9100
+  cadvisor:
+    image: google/cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    expose:
+      - 8080
+  grafana:
+    image: grafana/grafana:3.0.4
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+    env_file:
+      - config.monitoring
