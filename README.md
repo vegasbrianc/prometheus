@@ -1,44 +1,41 @@
+### Documentation being updated. Check back soon.
+
 ## A Prometheus docker-compose stack
-Here's a quick start to stand-up a [Prometheus](http://prometheus.io/) stack containing Prometheus server, container-exporter, and the Prometheus Dashboard to monitor your Docker infrastructure.
+Here's a quick start to stand-up a [Prometheus](http://prometheus.io/) stack containing Prometheus, Grafana and Node scraper to monitor your Docker infrastructure. A big shoutout to [philicious](https://github.com/philicious) for kicking this project off!
 
 ##Pre-requisites
-Before we get started installing the Prometheus stack. Ensure you install [docker-compose](https://docs.docker.com/compose/install/) on your Docker host machine.
+Before we get started installing the Prometheus stack. Ensure you install the latest version of docker and [docker-compose](https://docs.docker.com/compose/install/) on your Docker host machine. This has also been tested with Docker for Mac and it works well.
 
 ##Installation & Configuration
 Clone the project locally to your Docker host. 
 
-If you would like to change which targets should be monitored or make configuration changes edit the [/prom/prometheus.yml](https://github.com/vegasbrianc/prometheus/blob/master/prom/prometheus.yml#L30) file. The targets section. The targets section is where you define which components (data exporters) should be monitored by Prometheus. The names defined in this file are actually sourced from the service name in the docker-compose file. If you wish to change names of the services change the "container_name" parameter in the `docker-compose.yml` file. 
+If you would like to change which targets should be monitored or make configuration changes edit the [/prom/prometheus.yml](https://github.com/vegasbrianc/prometheus/blob/version-2/prometheus/prometheus.yml) file. The targets section is where you define what should be monitored by Prometheus. The names defined in this file are actually sourced from the service name in the docker-compose file. If you wish to change names of the services you can add the "container_name" parameter in the `docker-compose.yml` file. 
 
-Once configurations are done let's start it up. From the /prometheus project directory run the following commands:
+Once configurations are done let's start it up. From the /prometheus project directory run the following command:
 
-    $ docker-compose up
-    $ docker-compose start
+    $ docker-compose up -d
 
-The Prometheus stack should now be running. To access the different components:
 
-Prometheus: `http://<Host IP Address>:9090>` for example http://192.168.10.1:9090
+That's it. docker-compose builds the entire Grafa and Prometheus stack automagically. 
 
-Prometheus Dashboard: `http://<Host IP Address>:3000` for example http://192.168.10.1:3000
+The Grafana Dashboard is now accessible via: `http://<Host IP Address>:3000` for example http://192.168.10.1:3000
+
+username - admin
+password - foobar (Password is stored in the `config.monitoring` env file)
 
 ## Post Configuration
-Now we need to connect the Prometheus Dashboard to the Prometheus installation. Access the Prom Dash as mentioned above. 
-* Click the "Server" Menu at the top
-* Click "New Server"
-* Input desired name, Prometheus server IP and port (`http://<Host IP Address>:9090>` ) and select Prometheus for server type.
+Now we need to create the Prometheus Datasource in order to connect Grafana to Prometheues 
+* Click the `Grafana` Menu at the top left corner (looks like a fireball)
+* Click `Data Sources`
+* Click the green button `Add Data Source`.
 
-![PromDash New Server](https://github.com/vegasbrianc/prometheus/blob/master/New_server.png)
+![Data Source](https://github.com/vegasbrianc/prometheus/blob/version-2/images/Add_Data_Source.png)
 
-## Configure Dashboards
-Let's create our first Dashboard. Head over up to the Dashboard menu. First, create a new directory. Next, create a new Dashboard.
+## Install Dashboard
+I created a Dashboard template which is available on [Grafana Docker Dashboard](https://grafana.net/dashboards/179). Simply download the dashboard and select from the Grafana menu -> Dashboards -> Import
 
-Here's a quick Dashboard I put together as an example.
+This dashboard is intended to help you get started with monitoring. If you have any changes you would like to see in the Dashboard let me know so I can update Grafana site as well.
 
-![PromDash Screenshot](https://github.com/vegasbrianc/prometheus/blob/master/Dashboard_example.png)
+Here's the Dashboard Template
 
-## Sample Dashboard Queries
-The queries used in the example dashboard are located here - [Dashboard Queries](https://github.com/vegasbrianc/prometheus/blob/master/dashboard_queries.txt)
-
-## ToDo
-* Integrate and configure Alerting.
-* Make a separate stack with just cAdvisor as the metric collection
- 
+![Grafana Dashboard](https://github.com/vegasbrianc/prometheus/blob/version-2/images/Dashboard.png)
