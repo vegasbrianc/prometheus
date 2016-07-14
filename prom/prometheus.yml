@@ -7,7 +7,7 @@ global:
   # Attach these labels to any time series or alerts when communicating with
   # external systems (federation, remote storage, Alertmanager).
   external_labels:
-      monitor: 'codelab-monitor'
+      monitor: 'my-project'
 
 # Load and evaluate rules in this file every 'evaluation_interval' seconds.
 rule_files:
@@ -15,7 +15,6 @@ rule_files:
   # - "second.rules"
 
 # A scrape configuration containing exactly one endpoint to scrape:
-# Here it's Prometheus itself.
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
   - job_name: 'prometheus'
@@ -28,4 +27,4 @@ scrape_configs:
     # scheme defaults to 'http'.
 
     target_groups:
-      - targets: ['localhost:9090','cadvisor:8080']
+      - targets: ['localhost:9090','cadvisor:8080','node-exporter:9100']
