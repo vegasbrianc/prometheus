@@ -4,25 +4,38 @@ volumes:
     prometheus_data: {}
     grafana_data: {}
 
+networks:
+  front-tier:
+    driver: bridge
+  back-tier:
+    driver: bridge
+
 services:
   prometheus:
     image: prom/prometheus
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
     command:
       - '-config.file=/etc/prometheus/prometheus.yml'
       - '-storage.local.path=/prometheus'
     expose:
       - 9090
+    container_name: prometheus
     links:
       - cadvisor:cadvisor
     depends_on:
       - cadvisor
+    networks:
+      - back-tier
+  
   node-exporter:
     image: prom/node-exporter
     expose:
       - 9100
+    networks:
+      - back-tier
+  
   cadvisor:
     image: google/cadvisor
     volumes:
@@ -32,6 +45,9 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
     expose:
       - 8080
+    networks:
+      - back-tier
+  
   grafana:
     image: grafana/grafana
     depends_on:
@@ -42,3 +58,6 @@ services:
       - grafana_data:/var/lib/grafana
     env_file:
       - config.monitoring
+    networks:
+      - back-tier
+      - front-tier
