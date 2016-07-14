@@ -29,7 +29,7 @@ Now we need to create the Prometheus Datasource in order to connect Grafana to P
 * Click `Data Sources`
 * Click the green button `Add Data Source`.
 
-![Data Source](https://github.com/vegasbrianc/prometheus/blob/version-2/images/Add_Data_Source.png)
+<img src="https://github.com/vegasbrianc/prometheus/blob/version-2/images/Add_Data_Source.png" width="400" heighth="400">
 
 ## Install Dashboard
 I created a Dashboard template which is available on [Grafana Docker Dashboard](https://grafana.net/dashboards/179). Simply download the dashboard and select from the Grafana menu -> Dashboards -> Import
