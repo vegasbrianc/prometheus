@@ -13,6 +13,7 @@ networks:
 services:
   prometheus:
     image: prom/prometheus
+    container_name: prometheus
     volumes:
       - ./prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
@@ -21,7 +22,6 @@ services:
       - '-storage.local.path=/prometheus'
     expose:
       - 9090
-    container_name: prometheus
     links:
       - cadvisor:cadvisor
     depends_on:
