@@ -1,6 +1,4 @@
-### Documentation being updated. Check back soon.
-
-## A Prometheus docker-compose stack
+# A Prometheus & Grafana docker-compose stack
 Here's a quick start to stand-up a [Prometheus](http://prometheus.io/) stack containing Prometheus, Grafana and Node scraper to monitor your Docker infrastructure. A big shoutout to [philicious](https://github.com/philicious) for kicking this project off!
 
 ##Pre-requisites
