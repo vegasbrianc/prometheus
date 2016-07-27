@@ -1,0 +1,7 @@
+ALERT instance_down
+IF up == 0
+FOR 5s
+LABELS {severity="page"}
+ANNOTATIONS {
+   DESCRIPTION="{{$labels.instance}} of job {{$labels.job}} has been down for more than 5 seconds.",
+   SUMMARY="Instance {{$labels.instance}} down"}
