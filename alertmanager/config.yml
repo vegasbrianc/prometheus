@@ -1,33 +1,10 @@
-global:
-  # The smarthost and SMTP sender used for mail notifications.
-  smtp_smarthost: 'localhost:25'
-  smtp_from: 'alertmanager@example.org'
-  smtp_auth_username: 'alertmanager'
-  smtp_auth_password: 'password'
-  # The auth token for Hipchat.
-  hipchat_auth_token: '1234556789'
-  # Alternative host for Hipchat.
-  hipchat_url: 'https://hipchat.foobar.org/'
-
-# The directory from which notification templates are read.
-templates: 
-- '/etc/alertmanager/template/*.tmpl'
-
-# The root route on which each incoming alert enters.
 route:
-  group_by: [cluster]
-  # If an alert isn't caught by a route, send it slack.
-  receiver: slack_general
+    receiver: 'slack'
 
-  # The child route trees.
-  routes:
-  # Send severity=slack alerts to slack.
-    - match:
-        severity: slack
-        receiver: slack_general
 receivers:
-- name: slack_general
-  slack_configs:
-  - api_url: 'https://hooks.slack.com/services/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'
-    channel: '#prometheus'
-    send_resolved: true
+    - name: 'slack'
+      slack_configs:
+          - send_resolved: true
+            username: 'llitfkitfk'
+            channel: '#prometheus'
+            api_url: 'https://hooks.slack.com/services/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'

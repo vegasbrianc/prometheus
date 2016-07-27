@@ -23,6 +23,8 @@ services:
       - '-alertmanager.url=http://alertmanager:9093'
     expose:
       - 9090
+    ports:
+      - 9090:9090
     links:
       - cadvisor:cadvisor
       - alertmanager:alertmanager

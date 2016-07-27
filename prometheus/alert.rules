@@ -1,7 +1,9 @@
-ALERT instance_down
-IF up == 0
-FOR 5s
-LABELS {severity="page"}
-ANNOTATIONS {
-   DESCRIPTION="{{$labels.instance}} of job {{$labels.job}} has been down for more than 5 seconds.",
-   SUMMARY="Instance {{$labels.instance}} down"}
+ALERT service_down
+  IF up == 0
+  
+ALERT high_load
+  IF node_load1 > 0.5
+  ANNOTATIONS {
+      summary = "Instance {{ $labels.instance }} under high load",
+      description = "{{ $labels.instance }} of job {{ $labels.job }} is under high load.",
+  }
