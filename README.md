@@ -44,7 +44,8 @@ The Slack configuration requires to build a custom integration.
 * Copy the Webhook URL into the `alertmanager/config.yml` URL section
 * Fill in Slack username and channel
 
-View alerts status `http://<Host IP Address>:9090/alerts`
+View Prometheus alerts `http://<Host IP Address>:9090/alerts`
+View Alert Manager `http://<Host IP Address>:9093`
 
 ## Install Dashboard
 I created a Dashboard template which is available on [Grafana Docker Dashboard](https://grafana.net/dashboards/179). Simply download the dashboard and select from the Grafana menu -> Dashboards -> Import
