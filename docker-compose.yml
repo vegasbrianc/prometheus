@@ -20,10 +20,14 @@ services:
     command:
       - '-config.file=/etc/prometheus/prometheus.yml'
       - '-storage.local.path=/prometheus'
+      - '-alertmanager.url=http://alertmanager:9093'
     expose:
       - 9090
+    ports:
+      - 9090:9090
     links:
       - cadvisor:cadvisor
+      - alertmanager:alertmanager
     depends_on:
       - cadvisor
     networks:
@@ -35,7 +39,18 @@ services:
       - 9100
     networks:
       - back-tier
-  
+  alertmanager:
+    image: prom/alertmanager
+    ports:
+      - 9093:9093
+    volumes: 
+      - ./alertmanager/:/etc/alertmanager/
+    networks:
+      - back-tier
+    command:
+      - '-config.file=/etc/alertmanager/config.yml'
+      - '-storage.path=/alertmanager'
+      
   cadvisor:
     image: google/cadvisor
     volumes:
