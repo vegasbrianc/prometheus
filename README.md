@@ -29,6 +29,23 @@ Now we need to create the Prometheus Datasource in order to connect Grafana to P
 
 <img src="https://github.com/vegasbrianc/prometheus/blob/version-2/images/Add_Data_Source.png" width="400" heighth="400">
 
+## Alerting
+Alerting has been added to the stack with Slack integration. 2 Alerts have been added and are managed 
+
+Alerts              - `prometheus/alert.rules`
+Slack configuration - `alertmanager/config.yml`
+
+The Slack configuration requires to build a custom integration.
+* Open your slack team in your browser https://<your-slack-team>.slack.com/apps
+* Click build in the upper right corner
+* Make Custom integration 
+* Choose Incomming Web Hooks
+* Select which channel
+* Copy the Webhook URL into the `alertmanager/config.yml` URL section
+* Fill in Slack username and channel
+
+View alerts status `http://<Host IP Address>:9090/alerts`
+
 ## Install Dashboard
 I created a Dashboard template which is available on [Grafana Docker Dashboard](https://grafana.net/dashboards/179). Simply download the dashboard and select from the Grafana menu -> Dashboards -> Import
 
@@ -37,3 +54,9 @@ This dashboard is intended to help you get started with monitoring. If you have 
 Here's the Dashboard Template
 
 ![Grafana Dashboard](https://github.com/vegasbrianc/prometheus/blob/version-2/images/Dashboard.png)
+
+Grafana Dashboard - `dashboards/Grana_Dashboad.json`
+Alerting Dashboard - `dashboards/System_Monitoring.json`
+
+## Troubleshooting
+It appears some people have reported no data appearing in Grafana. If this is happening to you be sure to check the time range being queried within Grafana to ensure it is using Today's date with current time.
