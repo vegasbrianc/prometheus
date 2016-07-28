@@ -47,6 +47,13 @@ The Slack configuration requires to build a custom integration.
 View Prometheus alerts `http://<Host IP Address>:9090/alerts`
 View Alert Manager `http://<Host IP Address>:9093`
 
+### Test Alerts
+A quick test for your alerts is to stop a service. Stop the node_exporter container and you should notice shortly the alert arrive in Slack. Also check the alerts in both the Alert Manager and Prometheus Alerts just to understand how they flow through the system.
+
+High load test alert - `docker run --rm -it busybox sh -c "while true; do :; done"``
+
+Let this run for a few minutes and you will notice the load alert appear.
+
 ## Install Dashboard
 I created a Dashboard template which is available on [Grafana Docker Dashboard](https://grafana.net/dashboards/179). Simply download the dashboard and select from the Grafana menu -> Dashboards -> Import
 
