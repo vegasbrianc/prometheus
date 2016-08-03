@@ -36,7 +36,7 @@
     }
   ],
   "id": null,
-  "title": "Docker Monitoring with Prometheus",
+  "title": "Grafana_Dashboard.json",
   "description": "Docker Monitoring Template",
   "tags": [
     "docker"
@@ -44,7 +44,7 @@
   "style": "dark",
   "timezone": "browser",
   "editable": true,
-  "hideControls": true,
+  "hideControls": false,
   "sharedCrosshair": true,
   "rows": [
     {
@@ -608,7 +608,7 @@
   },
   "refresh": "10s",
   "schemaVersion": 12,
-  "version": 6,
+  "version": 1,
   "links": [],
   "gnetId": 162
 }
