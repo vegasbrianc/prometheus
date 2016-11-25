@@ -22,7 +22,7 @@ username - admin
 password - foobar (Password is stored in the `config.monitoring` env file)
 
 ## Post Configuration
-Now we need to create the Prometheus Datasource in order to connect Grafana to Prometheues 
+Now we need to create the Prometheus Datasource in order to connect Grafana to Prometheus 
 * Click the `Grafana` Menu at the top left corner (looks like a fireball)
 * Click `Data Sources`
 * Click the green button `Add Data Source`.
