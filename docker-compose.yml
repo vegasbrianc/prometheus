@@ -34,7 +34,16 @@ services:
       - back-tier
   
   node-exporter:
+    container_name: node-exporter
     image: prom/node-exporter
+    volumes: 
+      - /proc:/host/proc
+      - /sys:/host/sys
+      - /:/rootfs
+    command:
+      - '-collector.procfs=/host/proc'
+      - '-collector.sysfs=/host/sysfs'
+      - '-collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
     expose:
       - 9100
     networks:
