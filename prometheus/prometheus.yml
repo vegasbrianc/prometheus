@@ -29,3 +29,30 @@ scrape_configs:
 
     static_configs:
          - targets: ['localhost:9090','cadvisor:8080','node-exporter:9100']
+
+  # Auto-discovery via consul tags by Registrator
+  - job_name: 'consul-services'
+
+    consul_sd_configs:
+    - server: 'consul:8500'
+      scheme: 'http'
+
+    relabel_configs:
+    - source_labels: [ '__meta_consul_tags' ]
+      action: keep
+      regex: .*exporter.*
+    - source_labels: [ '__meta_consul_address', '__meta_consul_service_port' ]
+      action: replace
+      regex: (.+)(?::\d+);(\d+)
+      replacement: $1:$2
+      target_label: __address__
+    - source_labels: [ '__meta_consul_service' ]
+      action: keep
+      regex: (.+)
+      replacement: $1
+      target_label: __name__
+    - source_labels: [ '__meta_consul_service_id' ]
+      action: replace
+      regex: (.*):(.*):(.*)
+      replacement: $2
+      target_label: container_name

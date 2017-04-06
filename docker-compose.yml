@@ -3,6 +3,7 @@ version: '2'
 volumes:
     prometheus_data: {}
     grafana_data: {}
+    consul_data: {}
 
 networks:
   front-tier:
@@ -22,14 +23,17 @@ services:
       - '-storage.local.path=/prometheus'
       - '-alertmanager.url=http://alertmanager:9093'
     expose:
-      - 9090
+      - "9090"
     ports:
-      - 9090:9090
+      - "9090:9090"
     links:
       - cadvisor:cadvisor
       - alertmanager:alertmanager
     depends_on:
       - cadvisor
+    environment:
+      - SERVICE_NAME=prometheus
+      - SERVICE_TAGS=exporter
     networks:
       - back-tier
   
@@ -45,13 +49,17 @@ services:
       - '-collector.sysfs=/host/sysfs'
       - '-collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
     expose:
-      - 9100
+      - "9100"
+    environment:
+      - SERVICE_NAME=node-exporter
+      - SERVICE_TAGS=exporter
     networks:
       - back-tier
+
   alertmanager:
     image: prom/alertmanager
     ports:
-      - 9093:9093
+      - "9093:9093"
     volumes: 
       - ./alertmanager/:/etc/alertmanager/
     networks:
@@ -59,6 +67,8 @@ services:
     command:
       - '-config.file=/etc/alertmanager/config.yml'
       - '-storage.path=/alertmanager'
+    environment:
+      - SERVICE_NAME=alertmanager
       
   cadvisor:
     image: google/cadvisor
@@ -68,7 +78,10 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
     expose:
-      - 8080
+      - "8080"
+    environment:
+      - SERVICE_NAME=cadvisor
+      - SERVICE_TAGS=exporter
     networks:
       - back-tier
   
@@ -77,11 +90,74 @@ services:
     depends_on:
       - prometheus
     ports:
-      - 3000:3000
+      - "3000:3000"
     volumes:
       - grafana_data:/var/lib/grafana
     env_file:
       - config.monitoring
+    environment:
+      - SERVICE_NAME=grafana
     networks:
       - back-tier
       - front-tier
+
+  registrator:
+    image: gliderlabs/registrator
+    command: 
+      - '-internal'
+      - 'consul://consul:8500'
+    hostname: registrator # otherwise you won't be able to get rid of containers 
+    depends_on:
+      - consul
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    environment:
+      - "constraint:container!=~registrator*"
+    networks:
+      - back-tier
+      - front-tier
+
+  consul:
+    image: consul
+    command: 
+      - 'agent'
+      - '-server' 
+      - '-bootstrap'
+      - '-ui'
+      - '-client=0.0.0.0'
+    volumes:
+      - consul_data:/consul/data
+    ports:
+      - "8300"     # Server RPC, Server Use Only
+      - "8301/tcp" # Serf Gossip Protocol for LAN
+      - "8301/udp" # Serf Gossip Protocol for LAN
+      - "8302/tcp" # Serf Gossip Protocol for WAN, Server Use Only
+      - "8302/udp" # Serf Gossip Protocol for WAN, Server Use Only
+      - "8400"     # CLI RPC
+      - "8500"     # HTTP API & Web UI
+      - "8600/tcp" # DNS Interface
+      - "8600/udp" # DNS Interface
+    environment:
+      - SERVICE_NAME=consul
+      - SERVICE_TAGS=service,consul,registry,dns,discovery
+      - SERVICE_8300_IGNORE=true
+      - SERVICE_8301_IGNORE=true
+      - SERVICE_8302_IGNORE=true
+      - SERVICE_8400_IGNORE=true
+      - SERVICE_8500_NAME=consul-api
+      - SERVICE_8600_NAME=dns
+      - SERVICE_53_NAME=dns
+      - "constraint:container!=~consul*"
+    networks:
+      - back-tier
+
+  consul-exporter:
+    image: prom/consul-exporter 
+    command: -consul.server=consul:8500
+    ports:
+      - "9107"
+    environment:
+      - SERVICE_NAME=consul-exporter
+      - SERVICE_TAGS=exporter
+    networks:
+      - back-tier
