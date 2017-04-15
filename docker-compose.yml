@@ -24,7 +24,7 @@ services:
     expose:
       - 9090
     ports:
-      - 9090:9090
+      - 127.0.0.1:9090:9090
     links:
       - cadvisor:cadvisor
       - alertmanager:alertmanager
@@ -51,7 +51,7 @@ services:
   alertmanager:
     image: prom/alertmanager
     ports:
-      - 9093:9093
+      - 127.0.0.1:9093:9093
     volumes: 
       - ./alertmanager/:/etc/alertmanager/
     networks:
@@ -77,7 +77,7 @@ services:
     depends_on:
       - prometheus
     ports:
-      - 3000:3000
+      - 127.0.0.1:3000:3000
     volumes:
       - grafana_data:/var/lib/grafana
     env_file:
