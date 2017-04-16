@@ -32,18 +32,15 @@ services:
       - cadvisor
     networks:
       - back-tier
-  
+
   node-exporter:
     container_name: node-exporter
     image: prom/node-exporter
-    volumes: 
-      - /proc:/host/proc
-      - /sys:/host/sys
-      - /:/rootfs
-    command:
-      - '-collector.procfs=/host/proc'
-      - '-collector.sysfs=/host/sysfs'
-      - '-collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command: '-collector.procfs=/host/proc -collector.sysfs=/host/sys -collector.filesystem.ignored-mount-points="^(/rootfs|/host|)/(sys|proc|dev|host|etc)($$|/)" collector.filesystem.ignored-fs-types="^(sys|proc|auto|cgroup|devpts|ns|au|fuse\.lxc|mqueue)(fs|)$$"'
     expose:
       - 9100
     networks:
@@ -52,14 +49,14 @@ services:
     image: prom/alertmanager
     ports:
       - 9093:9093
-    volumes: 
+    volumes:
       - ./alertmanager/:/etc/alertmanager/
     networks:
       - back-tier
     command:
       - '-config.file=/etc/alertmanager/config.yml'
       - '-storage.path=/alertmanager'
-      
+
   cadvisor:
     image: google/cadvisor
     volumes:
@@ -71,7 +68,7 @@ services:
       - 8080
     networks:
       - back-tier
-  
+
   grafana:
     image: grafana/grafana
     depends_on:
