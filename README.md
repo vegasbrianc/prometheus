@@ -67,5 +67,26 @@ Here's the Dashboard Template
 Grafana Dashboard - `dashboards/Grana_Dashboad.json`
 Alerting Dashboard - `dashboards/System_Monitoring.json`
 
+## Security
+NGINX has been implemented as a reverse proxy in-font of all of the containers, this allows for HTTPS/SSL/TLS encryption of all the web GUIs and to implement authentication for the services that do not support it.
+
+### Generate your own certificate
+As the certificate and private key for nginx are in a public repository, to maintain privacy, you will need to genarate your own.
+```
+$ openssl req -x509 -nodes -sha256 -days 3650 -newkey rsa:2048 -keyout ./nginx/cert.key -out ./nginx/cert.crt -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=something"
+```
+
+### Change the basic authentication username/password for prometheus/alertmanager/node-exporter/cadvisor
+Unlike grafana, these services do not implement their own authentication; nginx basic authentication is used in it's place[*](https://www.robustperception.io/adding-basic-auth-to-prometheus-with-nginx/). The default username/password is `admin` and `foobar` it can be changed with htpasswd.
+```
+$ rm ./nginx/htpasswd;htpasswd -c ./nginx/htpasswd myuser
+```
+
+### Generate your own nginx PFS
+As the Diffie Hellman Ephemeral Parameters[*](https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#Forward_Secrecy_&_Diffie_Hellman_Ephemeral_Parameters) for nginx are in a public repository, to maintain privacy, you will need to genarate your own.
+```
+$ rm ./nginx/dhparams.pem;openssl dhparam -out ./nginx/dhparams.pem 4096
+```
+
 ## Troubleshooting
 It appears some people have reported no data appearing in Grafana. If this is happening to you be sure to check the time range being queried within Grafana to ensure it is using Today's date with current time.
