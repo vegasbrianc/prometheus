@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/vegasbrianc/prometheus.svg?branch=master)](https://travis-ci.org/vegasbrianc/prometheus)
+[![Build Status](https://travis-ci.org/vegasbrianc/prometheus.svg?branch=version-2)](https://travis-ci.org/vegasbrianc/prometheus)
 
 # A Prometheus & Grafana docker-compose stack
 
