@@ -38,7 +38,7 @@
   "annotations": {
     "list": []
   },
-  "description": "Grafana Docker Monitoring Template With Service Filter",
+  "description": "Docker Monitoring Template With Service Filter",
   "editable": true,
   "gnetId": 179,
   "graphTooltip": 1,
@@ -707,6 +707,6 @@
     ]
   },
   "timezone": "browser",
-  "title": "Docker Dashboard With Service Filter Copy",
-  "version": 0
+  "title": "Docker Dashboard With Service Filter",
+  "version": 2
 }
