@@ -70,5 +70,17 @@ Here's the Dashboard Template
 Grafana Dashboard - `dashboards/Grana_Dashboad.json`
 Alerting Dashboard - `dashboards/System_Monitoring.json`
 
+## Security Considerations
+This project is intended to be a quick-start to get up and running with Docker and Prometheus. Security has not been implemented in this project. It is the users responsability to implement Firewall/IpTables and SSL.
+
+Since this is a template to get started Prometheus and Alerting services are exposing their ports to allow for easy troubleshooting and understanding of how the stack works.
+
+### Security considerations for production:
+Here are just a couple security considerations for this stack to help you get started.
+* Remove the published ports from Prometheus and Alerting servicesi and only allow Grafana to be accessed
+* Enable SSL for Grafana with a Proxy such as [jwilder/nginx-proxy](https://hub.docker.com/r/jwilder/nginx-proxy/) or [Traefik](https://traefik.io/) with Let's Encrypt
+* Add user authentication via a Reverse Proxy [jwilder/nginx-proxy](https://hub.docker.com/r/jwilder/nginx-proxy/) or [Traefik](https://traefik.io/) for services cAdvisor, Prometheus, & Alerting as they don't support user authenticaiton
+* Terminate all services/containers via HTTPS/SSL/TLS
+ 
 ## Troubleshooting
 It appears some people have reported no data appearing in Grafana. If this is happening to you be sure to check the time range being queried within Grafana to ensure it is using Today's date with current time.
