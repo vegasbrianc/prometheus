@@ -84,3 +84,13 @@ Here are just a couple security considerations for this stack to help you get st
  
 ## Troubleshooting
 It appears some people have reported no data appearing in Grafana. If this is happening to you be sure to check the time range being queried within Grafana to ensure it is using Today's date with current time.
+
+## Intesting Projects that use this stack
+Several projects utilize this Prometheus stack. Here's the list of projects:
+
+* [Docker Pulls](https://github.com/vegasbrianc/docker-pulls) - Visualize Docker-Hub pull statistics with Prometheus
+* [GitHub Monitoring](https://github.com/vegasbrianc/github-monitoring) - Monitor your GitHub projects with Prometheus
+* [Traefik Reverse Proxy/Load Balancer Monitoring](https://github.com/vegasbrianc/docker-traefik-prometheus) - Monitor the popular Reverse Proxy/Load Balancer Traefik with Prometheus
+
+*Have an intersting Project which use this Repo? Submit yours to the list*
+
