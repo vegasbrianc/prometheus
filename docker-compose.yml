@@ -1,38 +1,41 @@
-version: '2'
+version: '3'
 
 volumes:
-    prometheus_data: {}
-    grafana_data: {}
+  prometheus-config:
+    external:
+      name: prometheus-config
+  prometheus-data:
+  grafana-data:
+  alertmanager-config:
+    external:
+      name: alertmanager-config
 
 networks:
   front-tier:
-    driver: bridge
   back-tier:
-    driver: bridge
 
 services:
   prometheus:
     image: prom/prometheus
     container_name: prometheus
     volumes:
-      - ./prometheus/:/etc/prometheus/
-      - prometheus_data:/prometheus
+      - prometheus-config:/etc/prometheus/
+      - prometheus-data:/prometheus
     command:
       - '-config.file=/etc/prometheus/prometheus.yml'
       - '-storage.local.path=/prometheus'
       - '-alertmanager.url=http://alertmanager:9093'
-    expose:
-      - 9090
     ports:
       - 9090:9090
-    links:
-      - cadvisor:cadvisor
-      - alertmanager:alertmanager
     depends_on:
       - cadvisor
     networks:
       - back-tier
-
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+          - node.hostname == node1
   node-exporter:
     container_name: node-exporter
     image: prom/node-exporter
@@ -45,18 +48,18 @@ services:
       - 9100
     networks:
       - back-tier
-  alertmanager:
-    image: prom/alertmanager
-    ports:
-      - 9093:9093
-    volumes:
-      - ./alertmanager/:/etc/alertmanager/
-    networks:
-      - back-tier
-    command:
-      - '-config.file=/etc/alertmanager/config.yml'
-      - '-storage.path=/alertmanager'
-
+    deploy:
+  # alertmanager:
+  #   image: prom/alertmanager
+  #   ports:
+  #     - 9093:9093
+  #   volumes:
+  #     - alertmanager-config:/etc/alertmanager/
+  #   networks:
+  #     - back-tier
+  #   command:
+  #     - '-config.file=/etc/alertmanager/config.yml'
+  #     - '-storage.path=/alertmanager'
   cadvisor:
     image: google/cadvisor
     volumes:
@@ -64,11 +67,10 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
-    expose:
-      - 8080
     networks:
       - back-tier
-
+    deploy:
+      mode: global
   grafana:
     image: grafana/grafana
     depends_on:
@@ -76,7 +78,7 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - grafana_data:/var/lib/grafana
+      - grafana-data:/var/lib/grafana
     env_file:
       - config.monitoring
     networks:
