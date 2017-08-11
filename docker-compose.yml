@@ -37,15 +37,12 @@ services:
           - node.role == manager
           - node.hostname == node1
   node-exporter:
-    container_name: node-exporter
     image: prom/node-exporter
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
     command: '-collector.procfs=/host/proc -collector.sysfs=/host/sys -collector.filesystem.ignored-mount-points="^(/rootfs|/host|)/(sys|proc|dev|host|etc)($$|/)" collector.filesystem.ignored-fs-types="^(sys|proc|auto|cgroup|devpts|ns|au|fuse\.lxc|mqueue)(fs|)$$"'
-    expose:
-      - 9100
     networks:
       - back-tier
     deploy:
