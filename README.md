@@ -17,7 +17,7 @@ Once configurations are done let's start it up. From the /prometheus project dir
     $ docker-compose up -d
 
 
-That's it. docker-compose builds the entire Grafa and Prometheus stack automagically. 
+That's it. docker-compose builds the entire Grafana and Prometheus stack automagically. 
 
 The Grafana Dashboard is now accessible via: `http://<Host IP Address>:3000` for example http://192.168.10.1:3000
 
@@ -41,8 +41,8 @@ Slack configuration - `alertmanager/config.yml`
 The Slack configuration requires to build a custom integration.
 * Open your slack team in your browser `https://<your-slack-team>.slack.com/apps`
 * Click build in the upper right corner
-* Make a Custom integration
-* Choose Incoming Web Hooks
+* Choose Incoming Web Hooks link under Send Messages
+* Click on the "incoming webhook integration" link
 * Select which channel
 * Click on Add Incoming WebHooks integration
 * Copy the Webhook URL into the `alertmanager/config.yml` URL section
@@ -56,7 +56,7 @@ A quick test for your alerts is to stop a service. Stop the node_exporter contai
 
 High load test alert - `docker run --rm -it busybox sh -c "while true; do :; done"`
 
-Let this run for a few minutes and you will notice the load alert appear.
+Let this run for a few minutes and you will notice the load alert appear. Then Ctrl+C to stop this container.
 
 ## Install Dashboard
 I created a Dashboard template which is available on [Grafana Docker Dashboard](https://grafana.net/dashboards/179). Simply download the dashboard and select from the Grafana menu -> Dashboards -> Import
@@ -94,3 +94,9 @@ Several projects utilize this Prometheus stack. Here's the list of projects:
 
 *Have an intersting Project which use this Repo? Submit yours to the list*
 
+## Swarm mode Configuration
+
+edit file `docker-compose.yml` change `node.hostname = <hostname where alertmanager config file in>` to your swarm node name for both `alertmanager` and `prometheus`
+```
+docker stack deploy -c docker-compose.yml monitor
+```

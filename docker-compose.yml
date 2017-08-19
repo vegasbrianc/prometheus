@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 volumes:
     prometheus_data: {}
@@ -6,9 +6,7 @@ volumes:
 
 networks:
   front-tier:
-    driver: bridge
   back-tier:
-    driver: bridge
 
 services:
   prometheus:
@@ -32,7 +30,10 @@ services:
       - cadvisor
     networks:
       - back-tier
-
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == <hostname where the prometheus config file in>
   node-exporter:
     container_name: node-exporter
     image: prom/node-exporter
@@ -45,6 +46,7 @@ services:
       - 9100
     networks:
       - back-tier
+    deploy:
   alertmanager:
     image: prom/alertmanager
     ports:
@@ -56,7 +58,10 @@ services:
     command:
       - '-config.file=/etc/alertmanager/config.yml'
       - '-storage.path=/alertmanager'
-
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == <hostname where alertmanager config file in>
   cadvisor:
     image: google/cadvisor
     volumes:
@@ -68,6 +73,8 @@ services:
       - 8080
     networks:
       - back-tier
+    deploy:
+      mode: global
 
   grafana:
     image: grafana/grafana
