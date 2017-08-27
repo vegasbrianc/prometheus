@@ -47,6 +47,7 @@ services:
       - 9100
     networks:
       - back-tier
+    restart: always
     deploy:
   alertmanager:
     image: prom/alertmanager
