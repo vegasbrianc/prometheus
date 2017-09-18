@@ -19,6 +19,8 @@ services:
       - '-config.file=/etc/prometheus/prometheus.yml'
       - '-storage.local.path=/prometheus'
       - '-alertmanager.url=http://alertmanager:9093'
+      - '-web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '-web.console.templates=/usr/share/prometheus/consoles'
     expose:
       - 9090
     ports:
@@ -30,6 +32,7 @@ services:
       - cadvisor
     networks:
       - back-tier
+    restart: always
     deploy:
       placement:
         constraints:
@@ -46,6 +49,7 @@ services:
       - 9100
     networks:
       - back-tier
+    restart: always
     deploy:
   alertmanager:
     image: prom/alertmanager
@@ -55,6 +59,7 @@ services:
       - ./alertmanager/:/etc/alertmanager/
     networks:
       - back-tier
+    restart: always
     command:
       - '-config.file=/etc/alertmanager/config.yml'
       - '-storage.path=/alertmanager'
@@ -73,6 +78,7 @@ services:
       - 8080
     networks:
       - back-tier
+    restart: always
     deploy:
       mode: global
 
