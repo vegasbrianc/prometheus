@@ -11,7 +11,6 @@ networks:
 services:
   prometheus:
     image: prom/prometheus
-    container_name: prometheus
     volumes:
       - ./prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
@@ -38,7 +37,6 @@ services:
         constraints:
           - node.hostname == <hostname where the prometheus config file in>
   node-exporter:
-    container_name: node-exporter
     image: prom/node-exporter
     volumes:
       - /proc:/host/proc:ro
