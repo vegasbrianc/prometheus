@@ -35,7 +35,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == <hostname where the prometheus config file in>
+          - node.hostname == <hostname where the prometheus config files are located>
   node-exporter:
     image: prom/node-exporter
     volumes:
@@ -64,7 +64,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == <hostname where alertmanager config file in>
+          - node.hostname == <hostname where alertmanager config files are located>
   cadvisor:
     image: google/cadvisor
     volumes:
