@@ -96,7 +96,7 @@ Several projects utilize this Prometheus stack. Here's the list of projects:
 
 ## Swarm mode Configuration
 
-edit file `docker-compose.yml` change `node.hostname = <hostname where alertmanager config file in>` to your swarm node name for both `alertmanager` and `prometheus`
+Edit file `docker-compose.yml` change `node.hostname = <hostname where alertmanager or Prometheus config files are>` to your swarm node name for both `alertmanager` and `prometheus`
 ```
 docker stack deploy -c docker-compose.yml monitor
 ```
