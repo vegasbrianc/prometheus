@@ -49,6 +49,7 @@ services:
       - back-tier
     restart: always
     deploy:
+      mode: global
   alertmanager:
     image: prom/alertmanager
     ports:
