@@ -10,7 +10,7 @@
   	- [Alerting](#alerting)
   	- [Test Alerts](#test-alerts)
   	- [Install Dashboard](#install-dashboard)
-  - [Security Considerations](#security-considerations-for-production)
+  - [Security Considerations](#security-considerations)
   	- [Production Security](#production-security)
   - [Troubleshooting](#troubleshooting)
   	- [Mac Users](#mac-users)
