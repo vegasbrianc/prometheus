@@ -3,19 +3,18 @@
 # Contents
 
 - Introduction
-  - [Overview](#A-Prometheus-&-Grafana-docker-compose-stack)
-  - [Pre-requisites](#Pre-requisites)
-  - [Installation & Configuration](#Installation-&-Configuration)
-  	- [Post Configuration](#Post-Configuration)
-  	- [Alerting](#Alerting)
-  	- [Test Alerts](#Test-Alerts)
-  	- [Install Dashboard](#Install-Dashboard)
+  - [Overview](#A-prometheus--grafana-docker-compose-stack)
+  - [Pre-requisites](#pre-requisites)
+  - [Installation & Configuration](#installation--configuration)
+  	- [Post Configuration](#post-configuration)
+  	- [Alerting](#alerting)
+  	- [Test Alerts](#test-alerts)
+  	- [Install Dashboard](#install-dashboard)
   - [Security Considerations](#Security-considerations-for-production)
-  - [Security Considerations](#Security-considerations-for-production)
-  - [Troubleshooting](#Troubleshooting)
-  	- [Mac Users](#Mac-Users)
-  - [Intesting Projects that use this Repo](#Intesting-Projects-that-use-this-Repo)
-  - [Swarm mode Configuration](#Swarm-mode-Configuration)
+  - [Troubleshooting](#troubleshooting)
+  	- [Mac Users](#mac-users)
+  - [Intesting Projects that use this Repo](#intesting-Projects-that-use-this-Repo)
+  - [Swarm mode Configuration](#swarm-mode-Configuration)
 
 # A Prometheus & Grafana docker-compose stack
 
