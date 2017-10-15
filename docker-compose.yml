@@ -32,6 +32,7 @@ services:
       - cadvisor
     networks:
       - back-tier
+      - host
     restart: always
     deploy:
       placement:
@@ -51,7 +52,7 @@ services:
     expose:
       - 9100
     networks:
-      - host
+      - back-tier
     restart: always
     deploy:
       mode: global
