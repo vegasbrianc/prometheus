@@ -10,7 +10,8 @@
   	- [Alerting](#alerting)
   	- [Test Alerts](#test-alerts)
   	- [Install Dashboard](#install-dashboard)
-  - [Security Considerations](#Security-considerations-for-production)
+  - [Security Considerations](#security-considerations-for-production)
+  	- [Production Security](#production-security)
   - [Troubleshooting](#troubleshooting)
   	- [Mac Users](#mac-users)
   - [Intesting Projects that use this Repo](#intesting-Projects-that-use-this-Repo)
@@ -91,7 +92,7 @@ This project is intended to be a quick-start to get up and running with Docker a
 
 Since this is a template to get started Prometheus and Alerting services are exposing their ports to allow for easy troubleshooting and understanding of how the stack works.
 
-## Security considerations for production:
+## Production Security:
 Here are just a couple security considerations for this stack to help you get started.
 * Remove the published ports from Prometheus and Alerting servicesi and only allow Grafana to be accessed
 * Enable SSL for Grafana with a Proxy such as [jwilder/nginx-proxy](https://hub.docker.com/r/jwilder/nginx-proxy/) or [Traefik](https://traefik.io/) with Let's Encrypt
