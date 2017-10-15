@@ -3,7 +3,7 @@
 # Contents
 
 - Introduction
-  - [Overview](#-prometheus--grafana-docker-compose-stack)
+  - [Overview](#a-prometheus--grafana-docker-compose-stack)
   - [Pre-requisites](#pre-requisites)
   - [Installation & Configuration](#installation--configuration)
   	- [Post Configuration](#post-configuration)
