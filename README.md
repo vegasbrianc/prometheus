@@ -14,8 +14,8 @@
   	- [Production Security](#production-security)
   - [Troubleshooting](#troubleshooting)
   	- [Mac Users](#mac-users)
-  - [Intesting Projects that use this Repo](#intesting-Projects-that-use-this-Repo)
-  - [Swarm mode Configuration](#swarm-mode-Configuration)
+  - [Interesting Projects that use this Repo](#interesting-projects-that-use-this-repo)
+  - [Swarm mode Configuration](#swarm-mode-configuration)
 
 # A Prometheus & Grafana docker-compose stack
 
@@ -105,7 +105,7 @@ It appears some people have reported no data appearing in Grafana. If this is ha
 ## Mac Users
 The node-exporter does not run the same as Mac and Linux. Node-Exporter is not designed to run on Mac and in fact cannot collect metrics from the Mac OS due to the differences between Mac and Linux OS's. I recommend you comment out the node-exporter section in the `docker-compose.yml` file and instead just use the cAdvisor. 
 
-# Intesting Projects that use this Repo
+# Interesting Projects that use this Repo
 Several projects utilize this Prometheus stack. Here's the list of projects:
 
 * [Docker Pulls](https://github.com/vegasbrianc/docker-pulls) - Visualize Docker-Hub pull statistics with Prometheus
