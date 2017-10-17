@@ -7,7 +7,6 @@ volumes:
 networks:
   front-tier:
   back-tier:
-  host:
 
 services:
   prometheus:
@@ -32,7 +31,6 @@ services:
       - cadvisor
     networks:
       - back-tier
-      - host
     restart: always
     deploy:
       placement:
