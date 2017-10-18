@@ -1,4 +1,4 @@
-version: '3'
+version: '3.2'
 
 volumes:
     prometheus_data: {}
@@ -9,6 +9,7 @@ networks:
   back-tier:
 
 services:
+
   prometheus:
     image: prom/prometheus
     volumes:
@@ -35,18 +36,24 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == <hostname where the prometheus config files are located>
+          - node.hostname == moby
+
   node-exporter:
     image: prom/node-exporter
     volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
+      - type: bind
+        source: /proc
+        target: /host/proc
+      - type: bind
+        source: /sys
+        target: /host/sys
+      - type: bind
+        source: /
+        target: /rootfs
     command: 
       - '--path.procfs=/host/proc' 
       - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.ignored-mount-points="^(/rootfs|/host|)/(sys|proc|dev|host|etc)($$|/)"'
-      - '--collector.filesystem.ignored-fs-types="^(sys|proc|auto|cgroup|devpts|ns|au|fuse\.lxc|mqueue)(fs|)$$"'
+      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
     expose:
       - 9100
     networks:
@@ -54,6 +61,7 @@ services:
     restart: always
     deploy:
       mode: global
+
   alertmanager:
     image: prom/alertmanager
     ports:
@@ -69,7 +77,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == <hostname where alertmanager config files are located>
+          - node.hostname == moby
   cadvisor:
     image: google/cadvisor
     volumes:
