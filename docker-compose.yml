@@ -36,24 +36,24 @@ services:
       placement:
         constraints:
           - node.hostname == <hostname where the prometheus config files are located>
-  node-exporter:
-    image: prom/node-exporter
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-    command: 
-      - '--path.procfs=/host/proc' 
-      - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.ignored-mount-points="^(/rootfs|/host|)/(sys|proc|dev|host|etc)($$|/)"'
-      - '--collector.filesystem.ignored-fs-types="^(sys|proc|auto|cgroup|devpts|ns|au|fuse\.lxc|mqueue)(fs|)$$"'
-    expose:
-      - 9100
-    networks:
-      - back-tier
-    restart: always
-    deploy:
-      mode: global
+#  node-exporter:
+#    image: prom/node-exporter
+#    volumes:
+#      - /proc:/host/proc:ro
+#      - /sys:/host/sys:ro
+#      - /:/rootfs:ro
+#    command: 
+#      - '--path.procfs=/host/proc' 
+#      - '--path.sysfs=/host/sys'
+#      - '--collector.filesystem.ignored-mount-points="^(/rootfs|/host|)/(sys|proc|dev|host|etc)($$|/)"'
+#      - '--collector.filesystem.ignored-fs-types="^(sys|proc|auto|cgroup|devpts|ns|au|fuse\.lxc|mqueue)(fs|)$$"'
+#    expose:
+#      - 9100
+#    networks:
+#      - back-tier
+#    restart: always
+#    deploy:
+#      mode: global
   alertmanager:
     image: prom/alertmanager
     ports:
