@@ -15,14 +15,13 @@
   - [Troubleshooting](#troubleshooting)
   	- [Mac Users](#mac-users)
   - [Interesting Projects that use this Repo](#interesting-projects-that-use-this-repo)
-  - [Swarm mode Configuration](#swarm-mode-configuration)
 
 # A Prometheus & Grafana docker-compose stack
 
 Here's a quick start to stand-up a [Prometheus](http://prometheus.io/) stack containing Prometheus, Grafana and Node scraper to monitor your Docker infrastructure. A big shoutout to [philicious](https://github.com/philicious) for kicking this project off!
 
 # Pre-requisites
-Before we get started installing the Prometheus stack. Ensure you install the latest version of docker and [docker-compose](https://docs.docker.com/compose/install/) on your Docker host machine. This has also been tested with Docker for Mac and it works well.
+Before we get started installing the Prometheus stack. Ensure you install the latest version of docker and [docker swarm](https://docs.docker.com/engine/swarm/swarm-tutorial/) on your Docker host machine. Docker Swarm is installed automatically when using Docker for Mac or Docker for Windows.
 
 # Installation & Configuration
 Clone the project locally to your Docker host. 
@@ -31,15 +30,27 @@ If you would like to change which targets should be monitored or make configurat
 
 Once configurations are done let's start it up. From the /prometheus project directory run the following command:
 
-    $ docker-compose up -d
+    $ docker stack deploy -c docker-compose.yml prome
 
 
-That's it. docker-compose builds the entire Grafana and Prometheus stack automagically. 
+That's it the `docker stack deploy' command deploys the entire Grafana and Prometheus stack automagically to the Docker Swarm. By default cAdvisor and node-exporter are set to Global deployment which means they will propogate to every docker host attached to the Swarm.
 
 The Grafana Dashboard is now accessible via: `http://<Host IP Address>:3000` for example http://192.168.10.1:3000
 
-username - admin
-password - foobar (Password is stored in the `config.monitoring` env file)
+	username - admin
+	password - foobar (Password is stored in the `config.monitoring` env file)
+
+In order to check the status of the newly created stack:
+    
+    $ docker stack ps prom
+
+View running services:
+
+    $ docker service ls
+
+View logs for a specific service
+  
+    $ docker service logs prom_<service_name>
 
 ## Post Configuration
 Now we need to create the Prometheus Datasource in order to connect Grafana to Prometheus 
@@ -114,9 +125,3 @@ Several projects utilize this Prometheus stack. Here's the list of projects:
 
 *Have an intersting Project which use this Repo? Submit yours to the list*
 
-# Swarm mode Configuration
-
-Edit file `docker-compose.yml` change `node.hostname = <hostname where alertmanager or Prometheus config files are>` to your swarm node name for both `alertmanager` and `prometheus`
-```
-docker stack deploy -c docker-compose.yml monitor
-```
