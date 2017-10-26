@@ -1,4 +1,4 @@
-version: '3'
+version: '3.2'
 
 volumes:
     prometheus_data: {}
@@ -9,9 +9,9 @@ networks:
   back-tier:
 
 services:
+
   prometheus:
     image: prom/prometheus
-    container_name: prometheus
     volumes:
       - ./prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
@@ -21,8 +21,6 @@ services:
       - '-alertmanager.url=http://alertmanager:9093'
       - '-web.console.libraries=/usr/share/prometheus/console_libraries'
       - '-web.console.templates=/usr/share/prometheus/consoles'
-    expose:
-      - 9090
     ports:
       - 9090:9090
     links:
@@ -36,21 +34,32 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == <hostname where the prometheus config file in>
+          - node.hostname == moby
+
   node-exporter:
-    container_name: node-exporter
     image: prom/node-exporter
     volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-    command: '-collector.procfs=/host/proc -collector.sysfs=/host/sys -collector.filesystem.ignored-mount-points="^(/rootfs|/host|)/(sys|proc|dev|host|etc)($$|/)" collector.filesystem.ignored-fs-types="^(sys|proc|auto|cgroup|devpts|ns|au|fuse\.lxc|mqueue)(fs|)$$"'
-    expose:
-      - 9100
+      - type: bind
+        source: /proc
+        target: /host/proc
+      - type: bind
+        source: /sys
+        target: /host/sys
+      - type: bind
+        source: /
+        target: /rootfs
+    command: 
+      - '--path.procfs=/host/proc' 
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
+    ports:
+      - 9100:9100
     networks:
       - back-tier
     restart: always
     deploy:
+      mode: global
+
   alertmanager:
     image: prom/alertmanager
     ports:
@@ -66,7 +75,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == <hostname where alertmanager config file in>
+          - node.hostname == moby
   cadvisor:
     image: google/cadvisor
     volumes:
@@ -74,8 +83,8 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
-    expose:
-      - 8080
+    ports:
+      - 8080:8080
     networks:
       - back-tier
     restart: always
