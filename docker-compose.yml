@@ -11,16 +11,16 @@ networks:
 services:
 
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:v2.0.0
     volumes:
       - ./prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
     command:
-      - '-config.file=/etc/prometheus/prometheus.yml'
-      - '-storage.local.path=/prometheus'
-      - '-alertmanager.url=http://alertmanager:9093'
-      - '-web.console.libraries=/usr/share/prometheus/console_libraries'
-      - '-web.console.templates=/usr/share/prometheus/consoles'
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.local.path=/prometheus'
+      - '--alertmanager.url=http://alertmanager:9093'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
     ports:
       - 9090:9090
     links:
