@@ -15,6 +15,12 @@ rule_files:
   # - "first.rules"
   # - "second.rules"
 
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - alertmanager:9093
+
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
 scrape_configs:
