@@ -1,9 +1,11 @@
-ALERT service_down
-  IF up == 0
-  
-ALERT high_load
-  IF node_load1 > 0.5
-  ANNOTATIONS {
-      summary = "Instance {{ $labels.instance }} under high load",
-      description = "{{ $labels.instance }} of job {{ $labels.job }} is under high load.",
-  }
+groups:
+- name: example
+  rules:
+  - alert: InstanceDown
+    expr: up == 0
+    for: 5m
+    labels:
+      severity: page
+    annotations:
+      summary: "Instance {{ $labels.instance }} down"
+      description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes."
