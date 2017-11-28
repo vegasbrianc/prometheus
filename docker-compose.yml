@@ -38,9 +38,9 @@ services:
   node-exporter:
     image: prom/node-exporter
     volumes:
-      - /proc:/host/proc
-      - /sys:/host/sys
-      - /:/rootfs
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
     command: 
       - '--path.procfs=/host/proc' 
       - '--path.sysfs=/host/sys'
