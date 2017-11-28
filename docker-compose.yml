@@ -30,10 +30,6 @@ services:
     networks:
       - back-tier
     restart: always
-    deploy:
-      placement:
-        constraints:
-          - node.hostname == moby
 
   node-exporter:
     image: prom/node-exporter
@@ -66,10 +62,7 @@ services:
     command:
       - '-config.file=/etc/alertmanager/config.yml'
       - '-storage.path=/alertmanager'
-    deploy:
-      placement:
-        constraints:
-          - node.hostname == moby
+      
   cadvisor:
     image: google/cadvisor
     volumes:
