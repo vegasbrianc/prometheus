@@ -3,8 +3,6 @@ version: '3.1'
 volumes:
     prometheus_data: {}
     grafana_data: {}
-    prometheus_config_data: {}
-    alertmanager_config_data: {}
 
 networks:
   front-tier:
@@ -15,7 +13,7 @@ services:
   prometheus:
     image: prom/prometheus:v2.0.0
     volumes:
-      - prometheus_config_data:/etc/prometheus/
+      - ./prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -35,7 +33,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == ${HOSTNAME}
+          - node.hostname == moby
 
   node-exporter:
     image: prom/node-exporter
@@ -61,7 +59,7 @@ services:
     ports:
       - 9093:9093
     volumes:
-      - alertmanager_config_data:/etc/alertmanager/
+      - ./alertmanager/:/etc/alertmanager/
     networks:
       - back-tier
     restart: always
@@ -71,7 +69,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == ${HOSTNAME}
+          - node.hostname == moby
   cadvisor:
     image: google/cadvisor
     volumes:
@@ -86,15 +84,7 @@ services:
     restart: always
     deploy:
       mode: global
-  source:
-    image: containerize/git
-    environment: 
-      - REPO_LOCAL=/data/repos/prometheus
-      - REPO_REMOTE=https://github.com/vegasbrianc/prometheus.git
-    tty: true
-    volumes: 
-      - prometheus_config_data:/data/git/repos/prometheus/prometheus
-      - alertmanager_config_data:/data/git/repos/prometheus/alertmanager
+
   grafana:
     image: grafana/grafana
     depends_on:
@@ -103,9 +93,8 @@ services:
       - 3000:3000
     volumes:
       - grafana_data:/var/lib/grafana
-    environment: 
-      - GF_SECURITY_ADMIN_PASSWORD=foobar
-      - GF_USERS_ALLOW_SIGN_UP=false
+    env_file:
+      - config.monitoring
     networks:
       - back-tier
       - front-tier
