@@ -33,7 +33,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == moby
+          - node.hostname == ${HOSTNAME}
 
   node-exporter:
     image: prom/node-exporter
@@ -69,7 +69,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == moby
+          - node.hostname == ${HOSTNAME}
   cadvisor:
     image: google/cadvisor
     volumes:
