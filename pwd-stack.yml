@@ -90,6 +90,7 @@ services:
     image: containerize/git
     environment: 
       - REPO_LOCAL=/data/git/repos/prometheus
+      - REPO_BRANCH=version-2
       - REPO_REMOTE=https://github.com/vegasbrianc/prometheus.git
     tty: true
     volumes: 
