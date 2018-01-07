@@ -60,7 +60,7 @@ Now we need to create the Prometheus Datasource in order to connect Grafana to P
 * Click `Data Sources`
 * Click the green button `Add Data Source`.
 
-<img src="https://github.com/vegasbrianc/prometheus/blob/version-2/images/Add_Data_Source.png" width="400" heighth="400">
+<img src="https://github.com/vegasbrianc/prometheus/raw/version-2/images/Add_Data_Source.png" width="400" heighth="400">
 
 ## Alerting
 Alerting has been added to the stack with Slack integration. 2 Alerts have been added and are managed 
@@ -95,7 +95,7 @@ This dashboard is intended to help you get started with monitoring. If you have 
 
 Here's the Dashboard Template
 
-![Grafana Dashboard](https://github.com/vegasbrianc/prometheus/blob/version-2/images/Dashboard.png)
+![Grafana Dashboard](https://github.com/vegasbrianc/prometheus/raw/version-2/images/Dashboard.png)
 
 Grafana Dashboard - `dashboards/Grana_Dashboad.json`
 Alerting Dashboard - `dashboards/System_Monitoring.json`
