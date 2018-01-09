@@ -18,7 +18,7 @@
 
 # A Prometheus & Grafana docker-compose stack
 
-Here's a quick start to stand-up a [Prometheus](http://prometheus.io/) stack containing Prometheus, Grafana and Node scraper to monitor your Docker infrastructure. A big shoutout to [philicious](https://github.com/philicious) for kicking this project off!
+Here's a quick start using Play-With-Docker (PWD) to start-up a [Prometheus](http://prometheus.io/) stack containing Prometheus, Grafana and Node scraper to monitor your Docker infrastructure. The Try in PWD below allows you to quickly deploy the entire Prometheus stack with a click of the button. This will allow you to quickly test the stack to see if it meets your needs.
 
 [![Try in PWD](https://github.com/play-with-docker/stacks/raw/master/assets/images/button.png)](https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/vegasbrianc/prometheus/version-2/pwd-stack.yml) 
 
