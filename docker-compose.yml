@@ -64,8 +64,8 @@ services:
       - back-tier
     restart: always
     command:
-      - '-config.file=/etc/alertmanager/config.yml'
-      - '-storage.path=/alertmanager'
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
     deploy:
       placement:
         constraints:
