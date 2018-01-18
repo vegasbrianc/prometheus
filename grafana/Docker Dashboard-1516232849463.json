@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_PROMETHEUS",
-      "label": "Prometheus",
+      "name": "DS_PROMETHEUS-RPI",
+      "label": "Prometheus-RPi",
       "description": "",
       "type": "datasource",
       "pluginId": "prometheus",
@@ -11,10 +11,10 @@
   ],
   "__requires": [
     {
-      "type": "panel",
-      "id": "singlestat",
-      "name": "Singlestat",
-      "version": ""
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "4.6.3"
     },
     {
       "type": "panel",
@@ -23,34 +23,43 @@
       "version": ""
     },
     {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "3.1.0"
-    },
-    {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
       "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "singlestat",
+      "name": "Singlestat",
+      "version": ""
     }
   ],
-  "id": null,
-  "title": "Docker Dashboard",
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
   "description": "Docker Monitoring Template",
-  "tags": [
-    "docker"
-  ],
-  "style": "dark",
-  "timezone": "browser",
   "editable": true,
+  "gnetId": 179,
+  "graphTooltip": 1,
   "hideControls": false,
-  "sharedCrosshair": true,
+  "id": null,
+  "links": [],
+  "refresh": "10s",
   "rows": [
     {
       "collapse": false,
-      "editable": true,
-      "height": "250px",
+      "height": 247,
       "panels": [
         {
           "cacheTimeout": null,
@@ -61,7 +70,7 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(245, 54, 54, 0.9)"
           ],
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS-RPI}",
           "editable": true,
           "error": false,
           "format": "percent",
@@ -74,7 +83,6 @@
           },
           "id": 4,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -108,9 +116,11 @@
             "lineColor": "rgb(31, 120, 193)",
             "show": false
           },
+          "tableColumn": "",
           "targets": [
             {
               "expr": "(sum(node_memory_MemTotal) - sum(node_memory_MemFree+node_memory_Buffers+node_memory_Cached) ) / sum(node_memory_MemTotal) * 100",
+              "format": "time_series",
               "interval": "10s",
               "intervalFactor": 1,
               "refId": "A",
@@ -139,7 +149,7 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(245, 54, 54, 0.9)"
           ],
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "${DS_PROMETHEUS-RPI}",
           "decimals": 2,
           "editable": true,
           "error": false,
@@ -153,7 +163,6 @@
           },
           "id": 6,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -185,11 +194,13 @@
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
             "lineColor": "rgb(31, 120, 193)",
-            "show": false
+            "show": true
           },
+          "tableColumn": "",
           "targets": [
             {
               "expr": "sum(sum by (container_name)( rate(container_cpu_usage_seconds_total{image!=\"\"}[1m] ) )) / count(node_cpu{mode=\"system\"}) * 100",
+              "format": "time_series",
               "interval": "10s",
               "intervalFactor": 1,
               "refId": "A",
@@ -218,13 +229,13 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(245, 54, 54, 0.9)"
           ],
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 2,
+          "datasource": "${DS_PROMETHEUS-RPI}",
+          "decimals": 1,
           "editable": true,
           "error": false,
-          "format": "percent",
+          "format": "percentunit",
           "gauge": {
-            "maxValue": 100,
+            "maxValue": 1,
             "minValue": 0,
             "show": true,
             "thresholdLabels": false,
@@ -232,7 +243,6 @@
           },
           "id": 7,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -266,18 +276,19 @@
             "lineColor": "rgb(31, 120, 193)",
             "show": false
           },
+          "tableColumn": "",
           "targets": [
             {
-              "expr": "sum (container_fs_limit_bytes - container_fs_usage_bytes) / sum(container_fs_limit_bytes)",
-              "interval": "10s",
-              "intervalFactor": 1,
-              "metric": "",
+              "expr": "min((node_filesystem_size{fstype=~\"xfs|ext4\"} - node_filesystem_free{fstype=~\"xfs|ext4\"} )/ node_filesystem_size{fstype=~\"xfs|ext4\"})",
+              "format": "time_series",
+              "hide": false,
+              "intervalFactor": 2,
               "refId": "A",
-              "step": 10
+              "step": 1800
             }
           ],
-          "thresholds": "65, 90",
-          "title": "Filesystem usage",
+          "thresholds": "0.75, 0.90",
+          "title": "Disk space",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -290,29 +301,112 @@
           "valueName": "current"
         }
       ],
-      "title": "Row"
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Row",
+      "titleSize": "h5"
     },
     {
       "collapse": false,
-      "editable": true,
-      "height": "250px",
+      "height": 270,
       "panels": [
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "${DS_PROMETHEUS-RPI}",
+          "editable": true,
+          "error": false,
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "height": "30",
+          "id": 10,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 1,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "count(container_last_seen{image!=\"\"})",
+              "format": "time_series",
+              "hide": false,
+              "intervalFactor": 2,
+              "legendFormat": "",
+              "metric": "container_last_seen",
+              "refId": "A",
+              "step": 240
+            }
+          ],
+          "thresholds": "",
+          "title": "Running containers",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "150%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "avg"
+        },
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS-RPI}",
           "decimals": 3,
           "editable": true,
           "error": false,
           "fill": 0,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 3,
-          "isNew": true,
           "legend": {
             "alignAsTable": true,
             "avg": true,
@@ -335,12 +429,14 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 12,
+          "spaceLength": 10,
+          "span": 11,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
               "expr": "sort_desc(sum(rate(container_cpu_user_seconds_total{image!=\"\"}[1m])) by (name))",
+              "format": "time_series",
               "interval": "10s",
               "intervalFactor": 1,
               "legendFormat": "{{ name }}",
@@ -349,6 +445,7 @@
               "step": 10
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Container CPU usage",
@@ -360,7 +457,11 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -382,29 +483,29 @@
           ]
         }
       ],
-      "title": "New row"
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "New row",
+      "titleSize": "h6"
     },
     {
       "collapse": false,
-      "editable": true,
       "height": "250px",
       "panels": [
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS-RPI}",
           "decimals": 2,
           "editable": true,
           "error": false,
           "fill": 0,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 2,
-          "isNew": true,
           "legend": {
             "alignAsTable": true,
             "avg": true,
@@ -428,6 +529,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 12,
           "stack": false,
           "steppedLine": false,
@@ -442,6 +544,7 @@
               "step": 10
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Container Memory Usage",
@@ -453,7 +556,11 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -477,19 +584,15 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS-RPI}",
           "decimals": 2,
           "editable": true,
           "error": false,
           "fill": 0,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 8,
-          "isNew": true,
           "legend": {
             "alignAsTable": true,
             "avg": true,
@@ -513,6 +616,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 12,
           "stack": false,
           "steppedLine": false,
@@ -527,6 +631,7 @@
               "step": 10
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Container Network Input",
@@ -538,7 +643,11 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -562,19 +671,15 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS-RPI}",
           "decimals": 2,
           "editable": true,
           "error": false,
           "fill": 0,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 9,
-          "isNew": true,
           "legend": {
             "alignAsTable": true,
             "avg": true,
@@ -598,12 +703,14 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 12,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
               "expr": "sort_desc(sum by (name) (rate(container_network_transmit_bytes_total{image!=\"\"}[1m] ) ))",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{ name }}",
               "metric": "container_network_transmit_bytes_total",
@@ -611,6 +718,7 @@
               "step": 4
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Container Network Output",
@@ -622,7 +730,11 @@
           },
           "type": "graph",
           "xaxis": {
-            "show": true
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -644,11 +756,24 @@
           ]
         }
       ],
-      "title": "New row"
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "New row",
+      "titleSize": "h6"
     }
   ],
+  "schemaVersion": 14,
+  "style": "dark",
+  "tags": [
+    "docker"
+  ],
+  "templating": {
+    "list": []
+  },
   "time": {
-    "from": "now-1h",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {
@@ -676,15 +801,7 @@
       "30d"
     ]
   },
-  "templating": {
-    "list": []
-  },
-  "annotations": {
-    "list": []
-  },
-  "refresh": "10s",
-  "schemaVersion": 12,
-  "version": 3,
-  "links": [],
-  "gnetId": 179
+  "timezone": "browser",
+  "title": "Docker Dashboard",
+  "version": 10
 }

@@ -1,100 +1,112 @@
-version: '3.1'
+version: '3.4'
 
 volumes:
+    portainer_data: {}
     prometheus_data: {}
     grafana_data: {}
 
 networks:
-  front-tier:
-  back-tier:
+    monitoring:
 
 services:
 
-  prometheus:
-    image: prom/prometheus:v2.0.0
-    volumes:
-      - ./prometheus/:/etc/prometheus/
-      - prometheus_data:/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-      - '--web.console.templates=/usr/share/prometheus/consoles'
-    ports:
-      - 9090:9090
-    links:
-      - cadvisor:cadvisor
-      - alertmanager:alertmanager
-    depends_on:
-      - cadvisor
-    networks:
-      - back-tier
-    restart: always
-    deploy:
-      placement:
-        constraints:
-          - node.hostname == ${HOSTNAME}
+   portainer:
+     image: portainer/portainer
+     restart: always
+     networks:
+       - monitoring
+     ports:
+       - "9000:9000"
+     volumes:
+       - /var/run/docker.sock:/var/run/docker.sock
+       - portainer_data:/data
 
-  node-exporter:
-    image: prom/node-exporter
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-    command: 
-      - '--path.procfs=/host/proc' 
-      - '--path.sysfs=/host/sys'
-      - --collector.filesystem.ignored-mount-points
-      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
-    ports:
-      - 9100:9100
-    networks:
-      - back-tier
-    restart: always
-    deploy:
-      mode: global
 
-  alertmanager:
-    image: prom/alertmanager
-    ports:
-      - 9093:9093
-    volumes:
-      - ./alertmanager/:/etc/alertmanager/
-    networks:
-      - back-tier
-    restart: always
-    command:
-      - '--config.file=/etc/alertmanager/config.yml'
-      - '--storage.path=/alertmanager'
-    deploy:
-      placement:
-        constraints:
-          - node.hostname == ${HOSTNAME}
-  cadvisor:
-    image: google/cadvisor
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-    ports:
-      - 8080:8080
-    networks:
-      - back-tier
-    restart: always
-    deploy:
-      mode: global
+    prometheus:
+      image: napnap75/rpi-prometheus:prometheus
+      depends_on:
+        - cadvisor
+        - node_exporter
+      restart: unless-stopped
+      networks:
+        - monitoring
+      ports:
+        - 9090:9090
+      volumes:
+        - ./prometheus/:/etc/prometheus/
+        - prometheus_data:/prometheus
+      command:
+        - '--config.file=/etc/prometheus/prometheus.yml'
+        - '--storage.tsdb.path=/prometheus'
+        - '--storage.tsdb.retention=10d'
+        - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+        - '--web.console.templates=/usr/share/prometheus/consoles'
+      # deploy:
+      #   placement:
+      #     constraints:
+      #       - node.hostname == ${HOSTNAME}
 
-  grafana:
-    image: grafana/grafana
-    depends_on:
-      - prometheus
-    ports:
-      - 3000:3000
-    volumes:
-      - grafana_data:/var/lib/grafana
+    node_exporter:
+      image: napnap75/rpi-prometheus:node_exporter
+      restart: unless-stopped
+      networks:
+        - monitoring
+      ports:
+        - 9100:9100
+      volumes:
+        - /proc:/host/proc:ro
+        - /sys:/host/sys:ro
+        - /:/rootfs:ro
+      command:
+        - '--path.procfs=/host/proc'
+        - '--path.sysfs=/host/sys'
+        - --collector.filesystem.ignored-mount-points
+        - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+      # deploy:
+      #   mode: global
+
+   cadvisor:
+     image: carlosedp/rpi-cadvisor
+     restart: unless-stopped
+     networks:
+       - monitoring
+     ports:
+       - 8082:8080
+     volumes:
+       - /:/rootfs:ro
+       - /var/run:/var/run:rw
+       - /sys:/sys:ro
+       - /var/lib/docker/:/var/lib/docker:ro
+     # deploy:
+     #   mode: global
+
+   # alertmanager:
+   #   image: napnap75/rpi-prometheus:alertmanager
+   #   restart: unless-stopped
+   #   networks:
+   #     - monitoring
+   #   ports:
+   #     - 9093:9093
+   #   volumes:
+   #     - ./alertmanager/:/etc/alertmanager/
+   #   command:
+   #     - '-config.file=/etc/alertmanager/config.yml'
+   #     - '-storage.path=/alertmanager'
+   #   deploy:
+   #     placement:
+   #       constraints:
+   #         - node.hostname == ${HOSTNAME}
+
+   grafana:
+     image: fg2it/grafana-armhf:v4.6.3
+     depends_on:
+       - prometheus
+     restart: unless-stopped
+     networks:
+       - monitoring
+     ports:
+       - 3000:3000
+     volumes:
+       - grafana_data:/var/lib/grafana
     env_file:
       - config.monitoring
-    networks:
-      - back-tier
-      - front-tier
