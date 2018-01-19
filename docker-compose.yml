@@ -1,7 +1,6 @@
 version: '2'
 
 volumes:
-  portainer_data: {}
   prometheus_data: {}
   grafana_data: {}
 
@@ -9,18 +8,6 @@ networks:
   monitoring:
 
 services:
-
-  portainer:
-    image: portainer/portainer
-    restart: always
-    networks:
-      - monitoring
-    ports:
-      - "9000:9000"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
-
 
   prometheus:
     image: napnap75/rpi-prometheus:prometheus
