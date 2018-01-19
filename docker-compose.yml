@@ -97,4 +97,11 @@ services:
       - grafana_data:/var/lib/grafana
     env_file:
       - config.monitoring
+    labels:
+      - "traefik.backend=grafana"
+      - "traefik.frontend.rule=Host:grafana.cloud.carlosedp.com"
+      - "traefik.docker.network=${COMPOSE_PROJECT_NAME}_monitoring"
+      - "traefik.enable=true"
+      - "traefik.port=3000"
+      - "traefik.default.protocol=http"
 
