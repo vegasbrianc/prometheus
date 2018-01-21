@@ -43,3 +43,13 @@ scrape_configs:
         - 'cadvisor'
         type: 'A'
         port: 8080
+  - job_name: 'traefik'
+    scrape_interval: 10s
+    #static_configs:
+    #  - targets: ['traefik:8080']
+    dns_sd_configs:
+      - names:
+        - 'traefik'
+        type: 'A'
+        port: 8080
+

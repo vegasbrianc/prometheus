@@ -1,0 +1,40 @@
+version: '2'
+
+networks:
+  default:
+
+services:
+
+  traefik:
+    image: traefik:v1.5.0-rc5
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $PWD/traefik/:/etc/traefik/
+    command:
+      - '--configFile=/etc/traefik/traefik.toml \'
+#      - '--logLevel=DEBUG'
+
+  portainer:
+    image: portainer/portainer
+    restart: always
+    ports:
+      - 9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    labels:
+      - "traefik.backend=portainer"
+      - "traefik.frontend.rule=Host:portainer.cloud.carlosedp.com"
+      - "traefik.docker.network=${COMPOSE_PROJECT_NAME}_monitoring"
+      - "traefik.enable=true"
+      - "traefik.port=9000"
+      - "traefik.default.protocol=http"
+
+volumes:
+  portainer_data: {}
+

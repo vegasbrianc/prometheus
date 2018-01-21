@@ -5,7 +5,7 @@ volumes:
   grafana_data: {}
 
 networks:
-  monitoring:
+  default:
 
 services:
 
@@ -15,8 +15,6 @@ services:
       - cadvisor
       - node_exporter
     restart: unless-stopped
-    networks:
-      - monitoring
     ports:
       - 9090:9090
     volumes:
@@ -36,8 +34,6 @@ services:
   node_exporter:
     image: napnap75/rpi-prometheus:node_exporter
     restart: unless-stopped
-    networks:
-      - monitoring
     ports:
       - 9100:9100
     volumes:
@@ -55,8 +51,6 @@ services:
   cadvisor:
     image: carlosedp/rpi-cadvisor
     restart: unless-stopped
-    networks:
-      - monitoring
     ports:
       - 8082:8080
     volumes:
@@ -70,8 +64,6 @@ services:
   # alertmanager:
   #   image: napnap75/rpi-prometheus:alertmanager
   #   restart: unless-stopped
-  #   networks:
-  #     - monitoring
   #   ports:
   #     - 9093:9093
   #   volumes:
@@ -89,8 +81,6 @@ services:
     depends_on:
       - prometheus
     restart: unless-stopped
-    networks:
-      - monitoring
     ports:
       - 3000:3000
     volumes:
@@ -100,7 +90,7 @@ services:
     labels:
       - "traefik.backend=grafana"
       - "traefik.frontend.rule=Host:grafana.cloud.carlosedp.com"
-      - "traefik.docker.network=${COMPOSE_PROJECT_NAME}_monitoring"
+      - "traefik.docker.network=${COMPOSE_PROJECT_NAME}_default"
       - "traefik.enable=true"
       - "traefik.port=3000"
       - "traefik.default.protocol=http"
