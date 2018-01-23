@@ -96,6 +96,7 @@ services:
     volumes: 
       - prometheus_config_data:/data/git/repos/prometheus/prometheus
       - alertmanager_config_data:/data/git/repos/prometheus/alertmanager
+
   grafana:
     image: grafana/grafana
     depends_on:
