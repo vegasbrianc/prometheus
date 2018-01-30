@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 volumes:
   prometheus_data: {}
@@ -6,6 +6,9 @@ volumes:
 
 networks:
   default:
+  traefik:
+    external:
+      name: containermgmt_traefik
 
 services:
 
@@ -17,6 +20,9 @@ services:
     restart: unless-stopped
     ports:
       - 9090:9090
+    networks:
+      - default
+      - traefik
     volumes:
       - ./prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
@@ -60,6 +66,10 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
     # deploy:
     #   mode: global
+    command:
+      - --global_housekeeping_interval=30s
+      - --housekeeping_interval=5s
+      - --storage_duration=1m0s
 
   # alertmanager:
   #   image: napnap75/rpi-prometheus:alertmanager
@@ -81,6 +91,9 @@ services:
     depends_on:
       - prometheus
     restart: unless-stopped
+    networks:
+      - default
+      - traefik
     ports:
       - 3000:3000
     volumes:
@@ -90,7 +103,7 @@ services:
     labels:
       - "traefik.backend=grafana"
       - "traefik.frontend.rule=Host:grafana.cloud.carlosedp.com"
-      - "traefik.docker.network=${COMPOSE_PROJECT_NAME}_default"
+      - "traefik.docker.network=containermgmt_traefik"
       - "traefik.enable=true"
       - "traefik.port=3000"
       - "traefik.default.protocol=http"
