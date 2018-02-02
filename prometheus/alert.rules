@@ -12,6 +12,7 @@ groups:
       summary: "Instance {{ $labels.instance }} down"
       description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 2 minutes."
 
+ # Alert for any instance that experiences high load for >2 minutes.
   - alert: high_load
     expr: node_load1 > 0.5
     for: 2m
