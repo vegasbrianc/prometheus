@@ -52,4 +52,14 @@ scrape_configs:
         - 'traefik'
         type: 'A'
         port: 8080
+  - job_name: 'arm-exporter'
+    scrape_interval: 10s
+    #static_configs:
+    #  - targets: ['arm_exporter:9243']
+    dns_sd_configs:
+      - names:
+        - 'arm_exporter'
+        type: 'A'
+        port: 9243
+
 

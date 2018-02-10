@@ -41,7 +41,7 @@ services:
     image: napnap75/rpi-prometheus:node_exporter
     restart: unless-stopped
     ports:
-      - 9100:9100
+      - 9100
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -53,6 +53,15 @@ services:
       - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
     # deploy:
     #   mode: global
+
+  arm_exporter:
+    image: carlosedp/arm_exporter
+    restart: unless-stopped
+    ports:
+      - 9243
+    # deploy:
+    #   mode: global
+
 
   cadvisor:
     image: carlosedp/rpi-cadvisor
