@@ -65,7 +65,7 @@
   "rows": [
     {
       "collapse": false,
-      "height": 150,
+      "height": 140,
       "panels": [
         {
           "cacheTimeout": null,
@@ -231,23 +231,99 @@
           "colorBackground": false,
           "colorValue": false,
           "colors": [
-            "rgba(50, 172, 45, 0.97)",
+            "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
-            "rgba(245, 54, 54, 0.9)"
+            "rgba(50, 172, 45, 0.97)"
           ],
           "datasource": "${DS_PROMETHEUS-RPI}",
-          "decimals": 1,
+          "decimals": 0,
           "editable": true,
           "error": false,
           "format": "percentunit",
           "gauge": {
-            "maxValue": 1,
+            "maxValue": 100,
             "minValue": 0,
-            "show": true,
+            "show": false,
             "thresholdLabels": false,
             "thresholdMarkers": true
           },
-          "id": 26,
+          "id": 27,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 2,
+          "sparkline": {
+            "fillColor": "rgba(50, 189, 31, 0.18)",
+            "full": false,
+            "lineColor": "rgb(69, 193, 31)",
+            "show": true
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "node_load1{instance=~\"$server:.*\"} / count by(job, instance)(count by(job, instance, cpu)(node_cpu{instance=~\"$server:.*\"}))",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "refId": "A",
+              "step": 1800
+            }
+          ],
+          "thresholds": "0.8,0.9",
+          "title": "Load",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "avg"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
+          ],
+          "datasource": "${DS_PROMETHEUS-RPI}",
+          "format": "celsius",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 40,
           "interval": null,
           "links": [],
           "mappingType": 1,
@@ -285,18 +361,16 @@
           "tableColumn": "",
           "targets": [
             {
-              "expr": "min((node_filesystem_size{fstype=~\"xfs|ext4\",instance=~\"$server:.*\"} - node_filesystem_free{fstype=~\"xfs|ext4\",instance=~\"$server:.*\"} )/ node_filesystem_size{fstype=~\"xfs|ext4\",instance=~\"$server:.*\"})",
+              "expr": "avg(rpi_cpu_temperature_celsius)",
               "format": "time_series",
-              "hide": false,
               "intervalFactor": 2,
-              "refId": "A",
-              "step": 1800
+              "refId": "A"
             }
           ],
-          "thresholds": "0.75, 0.90",
-          "title": "Disk space",
+          "thresholds": "",
+          "title": "CPU Temperature",
           "type": "singlestat",
-          "valueFontSize": "80%",
+          "valueFontSize": "110%",
           "valueMaps": [
             {
               "op": "=",
@@ -304,7 +378,7 @@
               "value": "null"
             }
           ],
-          "valueName": "current"
+          "valueName": "avg"
         },
         {
           "cacheTimeout": null,
@@ -395,18 +469,18 @@
             "rgba(245, 54, 54, 0.9)"
           ],
           "datasource": "${DS_PROMETHEUS-RPI}",
-          "decimals": 0,
+          "decimals": 1,
           "editable": true,
           "error": false,
-          "format": "decbytes",
+          "format": "percentunit",
           "gauge": {
-            "maxValue": 500000000,
+            "maxValue": 1,
             "minValue": 0,
             "show": true,
             "thresholdLabels": false,
             "thresholdMarkers": true
           },
-          "id": 30,
+          "id": 26,
           "interval": null,
           "links": [],
           "mappingType": 1,
@@ -444,15 +518,16 @@
           "tableColumn": "",
           "targets": [
             {
-              "expr": "(node_memory_SwapTotal{instance=~'$server:.*'} - node_memory_SwapFree{instance=~'$server:.*'})",
+              "expr": "min((node_filesystem_size{fstype=~\"xfs|ext4\",instance=~\"$server:.*\"} - node_filesystem_free{fstype=~\"xfs|ext4\",instance=~\"$server:.*\"} )/ node_filesystem_size{fstype=~\"xfs|ext4\",instance=~\"$server:.*\"})",
+              "format": "time_series",
+              "hide": false,
               "intervalFactor": 2,
-              "legendFormat": "",
               "refId": "A",
               "step": 1800
             }
           ],
-          "thresholds": "400000000",
-          "title": "Swap",
+          "thresholds": "0.75, 0.90",
+          "title": "Disk space",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -463,85 +538,6 @@
             }
           ],
           "valueName": "current"
-        },
-        {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "datasource": "${DS_PROMETHEUS-RPI}",
-          "decimals": 0,
-          "editable": true,
-          "error": false,
-          "format": "percentunit",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "id": 27,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "span": 2,
-          "sparkline": {
-            "fillColor": "rgba(50, 189, 31, 0.18)",
-            "full": false,
-            "lineColor": "rgb(69, 193, 31)",
-            "show": true
-          },
-          "tableColumn": "",
-          "targets": [
-            {
-              "expr": "node_load1{instance=~\"$server:.*\"} / count by(job, instance)(count by(job, instance, cpu)(node_cpu{instance=~\"$server:.*\"}))",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "refId": "A",
-              "step": 1800
-            }
-          ],
-          "thresholds": "0.8,0.9",
-          "title": "Load",
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "avg"
         }
       ],
       "repeat": null,
@@ -1767,6 +1763,168 @@
     },
     {
       "collapse": false,
+      "height": 318,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS-RPI}",
+          "fill": 1,
+          "id": 38,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "node_cpu_frequency_hertz{cpu='cpu0'}",
+              "format": "time_series",
+              "interval": "",
+              "intervalFactor": 2,
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "CPU Frequency",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": null,
+              "format": "hertz",
+              "label": "Frequency (Mhz)",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS-RPI}",
+          "fill": 1,
+          "id": 39,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rpi_cpu_temperature_celsius",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "CPU Temperature",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "celsius",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
       "height": 354,
       "panels": [
         {
@@ -1939,8 +2097,77 @@
     },
     {
       "collapse": false,
-      "height": 361,
+      "height": 250,
       "panels": [
+        {
+          "columns": [
+            {
+              "text": "Current",
+              "value": "current"
+            }
+          ],
+          "datasource": "${DS_PROMETHEUS-RPI}",
+          "editable": true,
+          "error": false,
+          "fontSize": "100%",
+          "id": 35,
+          "links": [],
+          "pageSize": null,
+          "scroll": true,
+          "showHeader": true,
+          "sort": {
+            "col": null,
+            "desc": false
+          },
+          "span": 6,
+          "styles": [
+            {
+              "colorMode": "cell",
+              "colors": [
+                "rgba(50, 172, 45, 0.97)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(245, 54, 54, 0.9)"
+              ],
+              "decimals": 2,
+              "pattern": "/.*/",
+              "thresholds": [
+                "80",
+                "90"
+              ],
+              "type": "number",
+              "unit": "percent"
+            }
+          ],
+          "targets": [
+            {
+              "expr": "sum(100 - ((container_spec_memory_limit_bytes{name=~\".+\"} - container_memory_usage_bytes{name=~\".+\"})  * 100 / container_spec_memory_limit_bytes{name=~\".+\"}) ) by (name) ",
+              "intervalFactor": 2,
+              "legendFormat": "{{name}}",
+              "metric": "",
+              "refId": "A",
+              "step": 240
+            },
+            {
+              "expr": "sum(container_spec_memory_limit_bytes{name=~\".+\"}) by (name) ",
+              "hide": true,
+              "intervalFactor": 2,
+              "legendFormat": "{{name}}",
+              "refId": "B",
+              "step": 240
+            },
+            {
+              "expr": "container_memory_usage_bytes{name=~\".+\"}",
+              "hide": true,
+              "intervalFactor": 2,
+              "legendFormat": "{{name}}",
+              "refId": "C",
+              "step": 240
+            }
+          ],
+          "title": "Remaining memory",
+          "transform": "timeseries_aggregations",
+          "type": "table"
+        },
         {
           "columns": [
             {
@@ -1961,7 +2188,7 @@
             "col": 0,
             "desc": true
           },
-          "span": 4,
+          "span": 6,
           "styles": [
             {
               "colorMode": null,
@@ -2008,75 +2235,6 @@
             }
           ],
           "title": "Limit memory",
-          "transform": "timeseries_aggregations",
-          "type": "table"
-        },
-        {
-          "columns": [
-            {
-              "text": "Current",
-              "value": "current"
-            }
-          ],
-          "datasource": "${DS_PROMETHEUS-RPI}",
-          "editable": true,
-          "error": false,
-          "fontSize": "100%",
-          "id": 35,
-          "links": [],
-          "pageSize": null,
-          "scroll": true,
-          "showHeader": true,
-          "sort": {
-            "col": null,
-            "desc": false
-          },
-          "span": 8,
-          "styles": [
-            {
-              "colorMode": "cell",
-              "colors": [
-                "rgba(50, 172, 45, 0.97)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(245, 54, 54, 0.9)"
-              ],
-              "decimals": 2,
-              "pattern": "/.*/",
-              "thresholds": [
-                "80",
-                "90"
-              ],
-              "type": "number",
-              "unit": "percent"
-            }
-          ],
-          "targets": [
-            {
-              "expr": "sum(100 - ((container_spec_memory_limit_bytes{name=~\".+\"} - container_memory_usage_bytes{name=~\".+\"})  * 100 / container_spec_memory_limit_bytes{name=~\".+\"}) ) by (name) ",
-              "intervalFactor": 2,
-              "legendFormat": "{{name}}",
-              "metric": "",
-              "refId": "A",
-              "step": 240
-            },
-            {
-              "expr": "sum(container_spec_memory_limit_bytes{name=~\".+\"}) by (name) ",
-              "hide": true,
-              "intervalFactor": 2,
-              "legendFormat": "{{name}}",
-              "refId": "B",
-              "step": 240
-            },
-            {
-              "expr": "container_memory_usage_bytes{name=~\".+\"}",
-              "hide": true,
-              "intervalFactor": 2,
-              "legendFormat": "{{name}}",
-              "refId": "C",
-              "step": 240
-            }
-          ],
-          "title": "Remaining memory",
           "transform": "timeseries_aggregations",
           "type": "table"
         }
@@ -2237,7 +2395,7 @@
     ]
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {
@@ -2267,5 +2425,6 @@
   },
   "timezone": "browser",
   "title": "Docker and system monitoring",
-  "version": 9
+  "version": 14
 }
+
