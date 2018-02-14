@@ -1,6 +1,6 @@
 # A Prometheus & Grafana docker-compose stack for Raspberry Pi
 
-Here's a quick start for an ARM monitoring stack containing [Prometheus](http://prometheus.io/), Grafana, cAdvisor and Node scraper to monitor your Docker infrastructure. The images used are multi-arch for ARM32 and ARM64 and correctly fetched from DockerHub using metadata from your archtecture. 
+Here's a quick start for an ARM monitoring stack containing [Prometheus](http://prometheus.io/), Grafana, cAdvisor and Node scraper to monitor your Docker infrastructure. The images used are multi-arch for ARM32 and ARM64 and correctly fetched from DockerHub using metadata from your archtecture.
 
 # Pre-requisites
 Before we get started installing the Prometheus stack. Ensure you [install](https://docs.docker.com/install/#server) the latest version of docker ~~and [docker swarm](https://docs.docker.com/engine/swarm/swarm-tutorial/)~~ on your Docker host machine.
@@ -30,7 +30,7 @@ Install docker-compose
     pip install --upgrade --force-reinstall docker-compose
 
 # Installation & Configuration
-Clone the project locally to your Docker host. 
+Clone the project locally to your Docker host.
 
     git clone https://github.com/carlosedp/arm-monitoring.git
     cd arm-monitoring
@@ -42,7 +42,7 @@ From `networks:` section, remove:
   traefik:
     external:
       name: containermgmt_traefik
- 
+
 And from the Grafana and Portainer containers, remove the traefik labels and remove from `networks:` section:
 
     - traefik
@@ -57,7 +57,7 @@ To check the containers:
 
     docker-compose ps
 
-os in case of using Docker Swarm (not tested)
+or in case of using Docker Swarm (not tested)
 
     $ HOSTNAME=$(hostname) docker stack deploy -c docker-compose.yml prom
 
@@ -65,15 +65,21 @@ That's it the `docker stack deploy` command deploys the entire stack automagical
 
 In order to check the status of the newly created stack:
 
-    $ docker stack ps prom
+Docker-compose:
+
+    docker-compose ps
+
+Swarm:
+
+    $ docker stack ps rpi-monitoring
 
 View running services:
 
-    $ docker service ls
+    $ docker ps
 
 View logs for a specific service
 
-    $ docker service logs prom_<service_name>
+    $ docker-compose logs rpimonitoring_<service_name>
 
 ## Portainer
 
@@ -88,7 +94,7 @@ The Grafana Dashboard is now accessible via: `http://<Host IP Address>:3000` for
     password - admin (Password is stored in the `config.monitoring` env file)
 
 ## Post Configuration
-Create the Prometheus Datasource in order to connect Grafana to Prometheus 
+Create the Prometheus Datasource in order to connect Grafana to Prometheus
 * Click the `Grafana` Menu at the top left corner (looks like a fireball)
 * Click `Data Sources`
 * Click the green button `Add Data Source`.
@@ -125,6 +131,20 @@ A quick test for your alerts is to stop a service. Stop the node_exporter contai
 High load test alert - `docker run --rm -it busybox sh -c "while true; do :; done"`
 
 Let this run for a few minutes and you will notice the load alert appear. Then Ctrl+C to stop this container.
+
+# Backup and Restore
+
+The repository includes two scripts to launch a docker container to backup and restore your docker volumes. Adjust the destination in the variable in the backup script.
+
+The backup script will backup all your docker volumes or the volume specified. To launch:
+
+    ./backup_docker_volumes.sh -a    # To backup all volumes
+
+    ./backup_docker_volumes.sh volume_name
+
+The restore will take the .tar.gz file and restore it to an existing volume (asking to replace files) or create a new one if it does not exist:
+
+    ./restore_docker_volume.sh docker_volume-20180117_175449.tar.gz
 
 # Security Considerations
 This project is intended to be a quick-start to get up and running with Docker and Prometheus. Security has not been implemented in this project. It is the users responsability to implement Firewall/IpTables and SSL.
