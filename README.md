@@ -116,7 +116,12 @@ Here are just a couple security considerations for this stack to help you get st
 It appears some people have reported no data appearing in Grafana. If this is happening to you be sure to check the time range being queried within Grafana to ensure it is using Today's date with current time.
 
 ## Mac Users
-The node-exporter does not run the same as Mac and Linux. Node-Exporter is not designed to run on Mac and in fact cannot collect metrics from the Mac OS due to the differences between Mac and Linux OS's. I recommend you comment out the node-exporter section in the `docker-compose.yml` file and instead just use the cAdvisor. 
+
+1. The node-exporter does not run the same as Mac and Linux. Node-Exporter is not designed to run on Mac and in fact cannot collect metrics from the Mac OS due to the differences between Mac and Linux OS's. I recommend you comment out the node-exporter section in the `docker-compose.yml` file and instead just use the cAdvisor. 
+
+2. If you find after you deploy your project that the prometheus and alertmanager services are in pending status due to "no suitable node" this is due to file system permissions. Be sure to Open Docker for Mac Preferences -> File Sharing Menu and add the following:
+
+![Docker for Mac File Sharing Settings](https://github.com/vegasbrianc/prometheus/blob/master/images/mac-filesystem.png)
 
 # Interesting Projects that use this Repo
 Several projects utilize this Prometheus stack. Here's the list of projects:
