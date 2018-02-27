@@ -63,8 +63,8 @@ The Slack configuration requires to build a custom integration.
 * Copy the Webhook URL into the `alertmanager/config.yml` URL section
 * Fill in Slack username and channel
 
-View Prometheus alerts `http://localhost:9090/alerts`
-View Alert Manager `http://localhost:9093`
+View Prometheus alerts `http://localhost:9090/alerts`  
+View Alert Manager `http://localhost:9093`  
 
 ### Test Alerts
 A quick test for your alerts is to stop a service. Stop the node_exporter container and you should notice shortly the alert arrive in Slack. Also check the alerts in both the Alert Manager and Prometheus Alerts just to understand how they flow through the system.
