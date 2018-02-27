@@ -18,7 +18,7 @@ Here's a quick start using only docker and docker-compose to start-up a [Prometh
 <img src="https://github.com/steiniche/prometheus/raw/master/images/Dashboard.png" width="1024" heighth="768">
 
 # Pre-requisites
-Before we get started installing the Prometheus demo. Ensure you install the latest version of docker and [docker-compose](https://docs.docker.com/compose/install/) on your machine.
+Before we get started setting up the Prometheus demo ensure you install the latest version of [docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/) on your machine.
 
 # Installation & Configuration
 Clone the project locally to your machine. 
@@ -30,7 +30,11 @@ This project contains sane defaults meaning that you can just go ahead and start
 
     $ docker-compose up -d
 
-The Grafana Dashboard is now accessible via: `http://localhost:3000`
+See what containers was started by running
+
+    $ docker ps
+
+Grafana is now accessible via: `http://localhost:3000`
 
 	username - admin
 	password - foobar (Password is stored in the `config.monitoring` env file)
