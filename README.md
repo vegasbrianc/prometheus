@@ -15,7 +15,7 @@
 # A Prometheus & Grafana demo
 Here's a quick start using only docker and docker-compose to start-up a [Prometheus](http://prometheus.io/) demo on your local machine containing Prometheus, Grafana, cadvisor and node-exporter to monitor your Docker infrastructure and machine.
 
-<img src="https://github.com/steiniche/prometheus/raw/master/images/Dashboard.png" width="400" heighth="400">
+<img src="https://github.com/steiniche/prometheus/raw/master/images/Dashboard.png" width="1024" heighth="768">
 
 # Pre-requisites
 Before we get started installing the Prometheus demo. Ensure you install the latest version of docker and [docker-compose](https://docs.docker.com/compose/install/) on your machine.
