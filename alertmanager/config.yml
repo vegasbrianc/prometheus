@@ -5,6 +5,6 @@ receivers:
     - name: 'slack'
       slack_configs:
           - send_resolved: true
-            username: '<username>'
-            channel: '#<channel-name>'
-            api_url: '<incomming-webhook-url>'
+            username: 'Prometheus'
+            channel: '#alert'
+            api_url: 'https://hooks.slack.com/services/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'
