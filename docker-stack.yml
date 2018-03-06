@@ -3,19 +3,16 @@ version: '3.1'
 volumes:
     prometheus_data: {}
     grafana_data: {}
-    prometheus_config_data: {}
-    alertmanager_config_data: {}
 
 networks:
-  front-tier:
-  back-tier:
+  monitor-net:
 
 services:
 
   prometheus:
     image: prom/prometheus:v2.0.0
     volumes:
-      - prometheus_config_data:/etc/prometheus/
+      - ./prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -24,13 +21,10 @@ services:
       - '--web.console.templates=/usr/share/prometheus/consoles'
     ports:
       - 9090:9090
-    links:
-      - cadvisor:cadvisor
-      - alertmanager:alertmanager
     depends_on:
       - cadvisor
     networks:
-      - back-tier
+      - monitor-net
     restart: always
     deploy:
       placement:
@@ -51,7 +45,7 @@ services:
     ports:
       - 9100:9100
     networks:
-      - back-tier
+      - monitor-net
     restart: always
     deploy:
       mode: global
@@ -61,17 +55,18 @@ services:
     ports:
       - 9093:9093
     volumes:
-      - alertmanager_config_data:/etc/alertmanager/
+      - "./alertmanager/:/etc/alertmanager/"
     networks:
-      - back-tier
+      - monitor-net
     restart: always
     command:
-      - "--config.file=/etc/alertmanager/config.yml"
+      - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/alertmanager'
     deploy:
       placement:
         constraints:
           - node.hostname == ${HOSTNAME}
+
   cadvisor:
     image: google/cadvisor
     volumes:
@@ -82,20 +77,10 @@ services:
     ports:
       - 8080:8080
     networks:
-      - back-tier
+      - monitor-net
     restart: always
     deploy:
       mode: global
-  source:
-    image: containerize/git
-    environment: 
-      - REPO_LOCAL=/data/git/repos/prometheus
-      - REPO_BRANCH=version-2
-      - REPO_REMOTE=https://github.com/vegasbrianc/prometheus.git
-    tty: true
-    volumes: 
-      - prometheus_config_data:/data/git/repos/prometheus/prometheus
-      - alertmanager_config_data:/data/git/repos/prometheus/alertmanager
 
   grafana:
     image: grafana/grafana
@@ -105,10 +90,9 @@ services:
       - 3000:3000
     volumes:
       - grafana_data:/var/lib/grafana
-      - ./grafana/provisioning/:/etc/grafana/provisioning/
-    environment: 
-      - GF_SECURITY_ADMIN_PASSWORD=foobar
-      - GF_USERS_ALLOW_SIGN_UP=false
+    env_file:
+      - config.monitoring
     networks:
-      - back-tier
-      - front-tier
+      - monitor-net
+    restart: always
+
