@@ -5,13 +5,12 @@ volumes:
     grafana_data: {}
 
 networks:
-  front-tier:
-  back-tier:
+  monitor-net:
 
 services:
 
   prometheus:
-    image: prom/prometheus:v2.1.0
+    image: prom/prometheus:v2.0.0
     volumes:
       - ./prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
@@ -22,18 +21,15 @@ services:
       - '--web.console.templates=/usr/share/prometheus/consoles'
     ports:
       - 9090:9090
-    links:
-      - cadvisor:cadvisor
-      - alertmanager:alertmanager
     depends_on:
       - cadvisor
     networks:
-      - back-tier
+      - monitor-net
     restart: always
-#    deploy:
-#      placement:
-#        constraints:
-#          - node.hostname == ${HOSTNAME}
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == ${HOSTNAME}
 
   node-exporter:
     image: prom/node-exporter
@@ -49,7 +45,7 @@ services:
     ports:
       - 9100:9100
     networks:
-      - back-tier
+      - monitor-net
     restart: always
     deploy:
       mode: global
@@ -59,17 +55,18 @@ services:
     ports:
       - 9093:9093
     volumes:
-      - ./alertmanager/:/etc/alertmanager/
+      - "./alertmanager/:/etc/alertmanager/"
     networks:
-      - back-tier
+      - monitor-net
     restart: always
     command:
       - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/alertmanager'
-#    deploy:
-#      placement:
-#        constraints:
-#          - node.hostname == ${HOSTNAME}
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == ${HOSTNAME}
+
   cadvisor:
     image: google/cadvisor
     volumes:
@@ -80,7 +77,7 @@ services:
     ports:
       - 8080:8080
     networks:
-      - back-tier
+      - monitor-net
     restart: always
     deploy:
       mode: global
@@ -93,11 +90,9 @@ services:
       - 3000:3000
     volumes:
       - grafana_data:/var/lib/grafana
-      - ./grafana/provisioning/:/etc/grafana/provisioning/
     env_file:
-      - ./grafana/config.monitoring
+      - config.monitoring
     networks:
-      - back-tier
-      - front-tier
+      - monitor-net
     restart: always
 
