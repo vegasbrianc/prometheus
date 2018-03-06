@@ -30,10 +30,10 @@ services:
     networks:
       - back-tier
     restart: always
-    deploy:
-      placement:
-        constraints:
-          - node.hostname == ${HOSTNAME}
+#    deploy:
+#      placement:
+#        constraints:
+#          - node.hostname == ${HOSTNAME}
 
   node-exporter:
     image: prom/node-exporter
@@ -66,10 +66,10 @@ services:
     command:
       - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/alertmanager'
-    deploy:
-      placement:
-        constraints:
-          - node.hostname == ${HOSTNAME}
+#    deploy:
+#      placement:
+#        constraints:
+#          - node.hostname == ${HOSTNAME}
   cadvisor:
     image: google/cadvisor
     volumes:
@@ -93,8 +93,9 @@ services:
       - 3000:3000
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
     env_file:
-      - config.monitoring
+      - ./grafana/config.monitoring
     networks:
       - back-tier
       - front-tier

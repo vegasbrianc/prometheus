@@ -6,10 +6,11 @@
   - [Overview](#a-prometheus--grafana-docker-compose-stack)
   - [Pre-requisites](#pre-requisites)
   - [Installation & Configuration](#installation--configuration)
-  	- [Post Configuration](#post-configuration)
+    - [Add Datasources & Dashboards](#add-a-datasources-and-dashboards)
+    - [Install Dashboards the Old Way](#install-dashboards-the-old-way)
   	- [Alerting](#alerting)
   	- [Test Alerts](#test-alerts)
-  	- [Install Dashboard](#install-dashboard)
+    - [Add additional Datasources](#add-additional-datasources)
   - [Security Considerations](#security-considerations)
   	- [Production Security](#production-security)
   - [Troubleshooting](#troubleshooting)
@@ -40,7 +41,7 @@ That's it the `docker stack deploy' command deploys the entire Grafana and Prome
 The Grafana Dashboard is now accessible via: `http://<Host IP Address>:3000` for example http://192.168.10.1:3000
 
 	username - admin
-	password - foobar (Password is stored in the `config.monitoring` env file)
+	password - foobar (Password is stored in the `/grafana/config.monitoring` env file)
 
 In order to check the status of the newly created stack:
 
@@ -54,13 +55,24 @@ View logs for a specific service
 
     $ docker service logs prom_<service_name>
 
-## Post Configuration
-Now we need to create the Prometheus Datasource in order to connect Grafana to Prometheus
-* Click the `Grafana` Menu at the top left corner (looks like a fireball)
-* Click `Data Sources`
-* Click the green button `Add Data Source`.
+## Add Datasources and Dashboards
+Grafana version 5.0.0 has introduced the concept of provisioning. This allows us to automate the process of adding Datasources & Dashboards. The `/grafana/provisioning/` directory contains the `datasources` and `dashboards` directories. These directories contain YAML files which allow us to specify which datasource or dashboards should be installed. 
 
-<img src="https://github.com/vegasbrianc/prometheus/raw/version-2/images/Add_Data_Source.png" width="400" heighth="400">
+If you would like to automate the installation of additional dashboards just copy the Dashboard `JSON` file to `/grafana/provisioning/dashboards` and it will be provisioned next time you stop and start Grafana.
+
+## Install Dashboards the old way
+
+I created a Dashboard template which is available on [Grafana Docker Dashboard](https://grafana.net/dashboards/179). Simply select Import from the Grafana menu -> Dashboards -> Import and provide the Dashboard ID [#179](https://grafana.net/dashboards/179)
+
+This dashboard is intended to help you get started with monitoring. If you have any changes you would like to see in the Dashboard let me know so I can update Grafana site as well.
+
+Here's the Dashboard Template
+
+![Grafana Dashboard](https://github.com/vegasbrianc/prometheus/raw/version-2/images/Dashboard.png)
+
+Grafana Dashboard - `dashboards/Grana_Dashboad.json`
+Alerting Dashboard
+
 
 ## Alerting
 Alerting has been added to the stack with Slack integration. 2 Alerts have been added and are managed
@@ -88,17 +100,13 @@ High load test alert - `docker run --rm -it busybox sh -c "while true; do :; don
 
 Let this run for a few minutes and you will notice the load alert appear. Then Ctrl+C to stop this container.
 
-## Install Dashboard
-I created a Dashboard template which is available on [Grafana Docker Dashboard](https://grafana.net/dashboards/179). Simply download the dashboard and select from the Grafana menu -> Dashboards -> Import
+### Add Additional Datasources
+Now we need to create the Prometheus Datasource in order to connect Grafana to Prometheus 
+* Click the `Grafana` Menu at the top left corner (looks like a fireball)
+* Click `Data Sources`
+* Click the green button `Add Data Source`.
 
-This dashboard is intended to help you get started with monitoring. If you have any changes you would like to see in the Dashboard let me know so I can update Grafana site as well.
-
-Here's the Dashboard Template
-
-![Grafana Dashboard](https://github.com/vegasbrianc/prometheus/raw/version-2/images/Dashboard.png)
-
-Grafana Dashboard - `dashboards/Grana_Dashboad.json`
-Alerting Dashboard - `dashboards/System_Monitoring.json`
+<img src="https://github.com/vegasbrianc/prometheus/raw/version-2/images/Add_Data_Source.png" width="400" heighth="400">
 
 # Security Considerations
 This project is intended to be a quick-start to get up and running with Docker and Prometheus. Security has not been implemented in this project. It is the users responsability to implement Firewall/IpTables and SSL.
