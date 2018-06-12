@@ -5,8 +5,8 @@ volumes:
     grafana_data: {}
 
 networks:
-  front-tier:
-  back-tier:
+  frontend:
+  backend:
 
 services:
 
@@ -29,7 +29,7 @@ services:
     depends_on:
       - cadvisor
     networks:
-      - back-tier
+      - backend
     restart: always
 
   node-exporter:
@@ -47,7 +47,7 @@ services:
     ports:
       - 9100:9100
     networks:
-      - back-tier
+      - backend
     restart: always
 
   alertmanager:
@@ -58,7 +58,7 @@ services:
     volumes:
       - ./alertmanager/:/etc/alertmanager/
     networks:
-      - back-tier
+      - backend
     restart: always
     command:
       - '--config.file=/etc/alertmanager/config.yml'
@@ -75,7 +75,7 @@ services:
     ports:
       - 8080:8080
     networks:
-      - back-tier
+      - backend
     restart: always
 
   grafana:
@@ -90,7 +90,7 @@ services:
     env_file:
       - config.monitoring
     networks:
-      - back-tier
-      - front-tier
+      - backend
+      - frontend
     restart: always
 
