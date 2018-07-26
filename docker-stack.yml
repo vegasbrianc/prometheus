@@ -69,6 +69,7 @@ services:
 
   cadvisor:
     image: google/cadvisor
+    user: "104"
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw

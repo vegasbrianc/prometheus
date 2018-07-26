@@ -87,6 +87,7 @@ services:
 
   grafana:
     image: grafana/grafana
+    user: "104"
     depends_on:
       - prometheus
     ports:
