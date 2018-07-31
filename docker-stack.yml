@@ -10,7 +10,7 @@ networks:
 services:
 
   prometheus:
-    image: prom/prometheus:v2.0.0
+    image: prom/prometheus
     volumes:
       - ./prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
@@ -29,7 +29,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == ${HOSTNAME}
+          - node.role==manager
 
   node-exporter:
     image: prom/node-exporter
@@ -65,11 +65,10 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == ${HOSTNAME}
+           - node.role==manager
 
   cadvisor:
     image: google/cadvisor
-    user: "104"
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
@@ -91,8 +90,9 @@ services:
       - 3000:3000
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
     env_file:
-      - config.monitoring
+      - ./grafana/config.monitoring
     networks:
       - monitor-net
     restart: always

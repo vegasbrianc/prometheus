@@ -34,7 +34,7 @@ datasources:
   # <bool> enable/disable with credentials headers
   withCredentials:
   # <bool> mark as default datasource. Max one per org
-  isDefault:
+  isDefault: true
   # <map> fields that will be converted to json and stored in json_data
   jsonData:
      graphiteVersion: "1.1"
