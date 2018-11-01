@@ -6,7 +6,7 @@
   - [Overview](#a-prometheus--grafana-docker-compose-stack)
   - [Pre-requisites](#pre-requisites)
   - [Installation & Configuration](#installation--configuration)
-    - [Add Datasources & Dashboards](#add-a-datasources-and-dashboards)
+    - [Add Datasources & Dashboards](#add-datasources-and-dashboards)
     - [Install Dashboards the Old Way](#install-dashboards-the-old-way)
   	- [Alerting](#alerting)
   	- [Test Alerts](#test-alerts)
