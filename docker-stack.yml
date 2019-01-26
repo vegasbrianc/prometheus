@@ -66,6 +66,14 @@ services:
       placement:
         constraints:
            - node.role==manager
+  pushgateway:
+    image: prom/pushgateway
+    ports:
+      - 9091:9091
+    networks: 
+      - back-tier
+      - front-tier
+    restart: always
 
   cadvisor:
     image: google/cadvisor
