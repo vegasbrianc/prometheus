@@ -70,6 +70,14 @@ services:
 #      placement:
 #        constraints:
 #          - node.hostname == ${HOSTNAME}
+  pushgateway:
+    image: prom/pushgateway
+    ports:
+      - 9091:9091
+    networks: 
+      - back-tier
+      - front-tier
+    
   cadvisor:
     image: google/cadvisor
     volumes:
