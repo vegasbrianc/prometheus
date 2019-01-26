@@ -74,6 +74,7 @@ services:
     image: prom/pushgateway
     ports:
       - 9091:9091
+    restart: always
     networks: 
       - back-tier
       - front-tier
