@@ -6,7 +6,7 @@
   - [Overview](#a-prometheus--grafana-docker-compose-stack)
   - [Pre-requisites](#pre-requisites)
   - [Installation & Configuration](#installation--configuration)
-    - [Add Datasources & Dashboards](#add-a-datasources-and-dashboards)
+    - [Add Datasources & Dashboards](#add-datasources-and-dashboards)
     - [Install Dashboards the Old Way](#install-dashboards-the-old-way)
   	- [Alerting](#alerting)
   	- [Test Alerts](#test-alerts)
@@ -137,5 +137,6 @@ Several projects utilize this Prometheus stack. Here's the list of projects:
 * [Docker Pulls](https://github.com/vegasbrianc/docker-pulls) - Visualize Docker-Hub pull statistics with Prometheus
 * [GitHub Monitoring](https://github.com/vegasbrianc/github-monitoring) - Monitor your GitHub projects with Prometheus
 * [Traefik Reverse Proxy/Load Balancer Monitoring](https://github.com/vegasbrianc/docker-traefik-prometheus) - Monitor the popular Reverse Proxy/Load Balancer Traefik with Prometheus
+* [internet monitoring](https://github.com/maxandersen/internet-monitoring) - Monitor your local network, internet connection and speed with Prometheus.
 
 *Have an intersting Project which use this Repo? Submit yours to the list*
