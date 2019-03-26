@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 4,
+  "id": 1,
   "links": [],
   "panels": [
     {
@@ -61,7 +61,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "node_memory_MemFree",
+          "expr": "node_memory_MemFree_bytes",
+          "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{job}}",
           "metric": "node_memory_MemFree",
@@ -104,7 +105,11 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -149,7 +154,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "node_memory_SwapFree",
+          "expr": "node_memory_SwapFree_bytes",
+          "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{job}}",
           "refId": "A",
@@ -206,7 +212,11 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -293,7 +303,11 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -399,7 +413,11 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -444,8 +462,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:580",
-          "expr": "(node_memory_MemFree + node_memory_SwapFree)/(node_memory_MemTotal + node_memory_SwapTotal)*100",
+          "expr": "(node_memory_MemFree_bytes + node_memory_SwapFree_bytes)/(node_memory_MemTotal_bytes + node_memory_SwapTotal_bytes)*100",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{job}}",
@@ -503,7 +520,11 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -550,8 +571,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:633",
-          "expr": "node_filesystem_avail{mountpoint=\"/\"}",
+          "expr": "node_filesystem_avail_bytes{mountpoint=\"/rootfs\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -611,7 +631,11 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": "10s",
@@ -655,5 +679,5 @@
   "timezone": "browser",
   "title": "System Monitoring",
   "uid": "VjHLo-ekz",
-  "version": 4
+  "version": 5
 }
