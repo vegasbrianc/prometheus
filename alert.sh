@@ -4,7 +4,6 @@ echo ""
 
 image=busybox
 numberofcpus=$(grep -c ^processor /proc/cpuinfo)
-numberofcpus=4
 
 # this is where the magic happens
 for ((i=0;i<$numberofcpus;i++))
