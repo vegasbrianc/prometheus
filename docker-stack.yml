@@ -83,7 +83,7 @@ services:
       mode: global
 
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:5.4.4
     depends_on:
       - prometheus
     ports:
@@ -96,4 +96,8 @@ services:
     networks:
       - monitor-net
     restart: always
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
 
