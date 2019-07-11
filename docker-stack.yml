@@ -87,7 +87,7 @@ services:
         condition: on-failure
 
   grafana:
-    image: grafana/grafana:5.4.4
+    image: grafana/grafana
     depends_on:
       - prometheus
     ports:
@@ -99,6 +99,7 @@ services:
       - ./grafana/config.monitoring
     networks:
       - monitor-net
+    user: "104"
     deploy:
       placement:
         constraints:
