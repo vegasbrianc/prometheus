@@ -11,6 +11,7 @@
   	- [Alerting](#alerting)
   	- [Test Alerts](#test-alerts)
     - [Add additional Datasources](#add-additional-datasources)
+  - [Deploy Prometheus stack with Traefik](#deploy-prometheus-stack-with-traefik)
   - [Security Considerations](#security-considerations)
   	- [Production Security](#production-security)
   - [Troubleshooting](#troubleshooting)
@@ -113,7 +114,52 @@ This project is intended to be a quick-start to get up and running with Docker a
 
 Since this is a template to get started Prometheus and Alerting services are exposing their ports to allow for easy troubleshooting and understanding of how the stack works.
 
-## Production Security:
+## Deploy Prometheus stack with Traefik
+
+Same requirements as above. Swarm should be enabled and the Repo should be cloned to your Docker host.
+
+In the `docker-traefik-prometheus`directory run the following:
+
+    docker stack deploy -c docker-traefik-stack.yml traefik
+
+Verify all the services have been provisioned. The Replica count for each service should be 1/1 
+**Note this can take a couple minutes**
+
+    docker service ls
+
+## Prometheus & Grafana now have hostnames
+
+* Grafana - http://grafana.localhost
+* Prometheus - http://prometheus.localhost
+
+
+## Check the Metrics
+Once all the services are up we can open the Traefik Dashboard. The dashboard should show us our frontend and backends configured for both Grafana and Prometheus.
+
+    http://localhost:8080
+
+
+Take a look at the metrics which Traefik is now producing in Prometheus metrics format
+
+    http://localhost:8080/metrics
+
+
+## Login to Grafana and Visualize Metrics
+
+Grafana is an Open Source visualization tool for the metrics collected with Prometheus. Next, open Grafana to view the Traefik Dashboards.
+**Note: Firefox doesn't properly work with the below URLS please use Chrome**
+
+    http://grafana.localhost
+
+Username: admin
+Password: foobar
+
+Open the Traefik Dashboard and select the different backends available
+
+**Note: Upper right-hand corner of Grafana switch the default 1 hour time range down to 5 minutes. Refresh a couple times and you should see data start flowing**
+
+# Production Security:
+
 Here are just a couple security considerations for this stack to help you get started.
 * Remove the published ports from Prometheus and Alerting servicesi and only allow Grafana to be accessed
 * Enable SSL for Grafana with a Proxy such as [jwilder/nginx-proxy](https://hub.docker.com/r/jwilder/nginx-proxy/) or [Traefik](https://traefik.io/) with Let's Encrypt
@@ -121,6 +167,7 @@ Here are just a couple security considerations for this stack to help you get st
 * Terminate all services/containers via HTTPS/SSL/TLS
 
 # Troubleshooting
+
 It appears some people have reported no data appearing in Grafana. If this is happening to you be sure to check the time range being queried within Grafana to ensure it is using Today's date with current time.
 
 ## Mac Users
