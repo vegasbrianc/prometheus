@@ -71,7 +71,7 @@ services:
           - "traefik.frontend.rule=Host:prometheus.localhost"
           - "traefik.backend=prometheus"
           - "traefik.port=9090"
-          - "traefik.docker.network=inbound"
+          - "traefik.docker.network=traefik"
       restart_policy:
         condition: on-failure
 
@@ -149,6 +149,6 @@ services:
         -  "traefik.frontend.rule=Host:grafana.localhost"
         - "traefik.backend=grafana"
         - "traefik.port=3000"
-        - "traefik.docker.network=inbound"
+        - "traefik.docker.network=traefik"
       restart_policy:
         condition: on-failure
