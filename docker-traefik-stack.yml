@@ -6,6 +6,11 @@ volumes:
 
 networks:
   monitor-net:
+    driver: overlay
+    name: inbound
+  traefik:
+    driver: overlay
+    name: traefik
 
 services:
   traefik:
@@ -62,11 +67,11 @@ services:
       placement:
         constraints:
           - node.role==manager
-        labels:
-        - "traefik.frontend.rule=Host:prometheus.localhost"
-        - "traefik.backend=prometheus"
-        - "traefik.port=9090"
-        - "traefik.docker.network=inbound"
+      labels:
+          - "traefik.frontend.rule=Host:prometheus.localhost"
+          - "traefik.backend=prometheus"
+          - "traefik.port=9090"
+          - "traefik.docker.network=inbound"
       restart_policy:
         condition: on-failure
 
@@ -87,7 +92,7 @@ services:
       - monitor-net
     deploy:
       mode: global
-    restart_policy:
+      restart_policy:
         condition: on-failure
 
   alertmanager:
@@ -121,7 +126,7 @@ services:
       - monitor-net
     deploy:
       mode: global
-    restart_policy:
+      restart_policy:
         condition: on-failure
 
   grafana:
