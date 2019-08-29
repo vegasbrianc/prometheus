@@ -49,8 +49,8 @@ services:
       - monitor-net
     deploy:
       mode: global
-    restart_policy:
-        condition: on-failure
+      restart_policy:
+          condition: on-failure
 
   alertmanager:
     image: prom/alertmanager
@@ -83,8 +83,8 @@ services:
       - monitor-net
     deploy:
       mode: global
-    restart_policy:
-        condition: on-failure
+      restart_policy:
+          condition: on-failure
 
   grafana:
     image: grafana/grafana
