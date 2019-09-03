@@ -6,8 +6,50 @@ volumes:
 
 networks:
   monitor-net:
+    driver: overlay
+    name: inbound
+  traefik:
+    driver: overlay
+    name: traefik
 
 services:
+  traefik:
+    image: traefik:v1.7.12-alpine
+    command:
+      - "--logLevel=DEBUG"
+      - "--api"
+      - "--metrics"
+      - "--metrics.prometheus.buckets=0.1,0.3,1.2,5.0"
+      - "--docker"
+      - "--docker.swarmMode"
+      - "--docker.domain=docker.localhost"
+      - "--docker.watch"
+    networks:
+      - traefik
+      - monitor-net
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - target: 80
+        published: 80
+        mode: host
+      - target: 443
+        published: 443
+        mode: host
+      - target: 8080
+        published: 8080
+        protocol: tcp
+        mode: ingress
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.role == manager
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
 
   prometheus:
     image: prom/prometheus
@@ -19,16 +61,17 @@ services:
       - '--storage.tsdb.path=/prometheus'
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
-    ports:
-      - 9090:9090
-    depends_on:
-      - cadvisor
     networks:
-      - monitor-net
+      - monitor-net     
     deploy:
       placement:
         constraints:
           - node.role==manager
+      labels:
+          - "traefik.frontend.rule=Host:prometheus.localhost"
+          - "traefik.backend=prometheus"
+          - "traefik.port=9090"
+          - "traefik.docker.network=traefik"
       restart_policy:
         condition: on-failure
 
@@ -50,7 +93,7 @@ services:
     deploy:
       mode: global
       restart_policy:
-          condition: on-failure
+        condition: on-failure
 
   alertmanager:
     image: prom/alertmanager
@@ -78,20 +121,18 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
     ports:
-      - 8080:8080
+      - 8088:8080
     networks:
       - monitor-net
     deploy:
       mode: global
       restart_policy:
-          condition: on-failure
+        condition: on-failure
 
   grafana:
     image: grafana/grafana
     depends_on:
       - prometheus
-    ports:
-      - 3000:3000
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning/:/etc/grafana/provisioning/
@@ -104,6 +145,10 @@ services:
       placement:
         constraints:
           - node.role==manager
+      labels:
+        -  "traefik.frontend.rule=Host:grafana.localhost"
+        - "traefik.backend=grafana"
+        - "traefik.port=3000"
+        - "traefik.docker.network=traefik"
       restart_policy:
         condition: on-failure
-
