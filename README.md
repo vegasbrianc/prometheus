@@ -96,11 +96,23 @@ View Prometheus alerts `http://localhost:9090/alerts`
 View Alert Manager `http://localhost:9093`  
 
 ### Test Alerts
-A quick test for your alerts is to stop a service. Stop the node_exporter container and you should notice shortly the alert arrive in Slack. Also check the alerts in both the Alert Manager and Prometheus Alerts just to understand how they flow through the system.
 
-High load test alert - `docker run --rm -it busybox sh -c "while true; do :; done"`
+#### Service down
+A quick way to test the service down pre-configured alert is to stop a service. 
 
-Let this run for a few minutes and you will notice the load alert appear. Then Ctrl+C to stop this container.
+* Stop the `node-exporter` container by running `docker stop node_exporter`.
+* Check the alerts in both the Alert Manager `http://localhost:9093` and Prometheus Alerts `http://localhost:9090/alerts` to understand how they flow through the system and what you can control where.
+* The alert will start by being `pending` which can only be seen in Prometheus Alerts `http://localhost:9090/alerts`.
+* This is because Prometheus will only sent the alert to Alert Manager `http://localhost:9093` when it is `active`, which in this case will take 2 minutes due to the configuration in `prometheus/alert.rules`.
+* You should notice shortly the alert arrive in Slack if you have configured the integration. 
+* To make everything go back to normal run `docker-compose up -d`.
+
+#### High load
+This tutorial has a bash file to help testing high load. You can look trough it first to see what it, the short version is that it runs a busy loop on all your CPUs.
+
+* To test the high load alert run `./alert.sh`.
+* Let this run for a few minutes and you will notice the load alert appear. 
+* Then press `any key` or `Ctrl+C` to the script this container.
 
 # Security Considerations
 This project is intended to be a quick-start to get up and running with Docker and Prometheus. Security has not been implemented in this project. It is the users responsability to implement sensible security practices.
