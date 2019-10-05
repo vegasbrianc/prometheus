@@ -1,18 +1,17 @@
 # Contents
 
-- Introduction
-  - [Overview](#a-prometheus--grafana-demo)
-  - [Pre-requisites](#pre-requisites)
-  - [Installation & Configuration](#installation--configuration)
-  	- [Post Configuration](#post-configuration)
-  	- [Import Dashboard](#import-dashboard)
-    - [Alerting](#alerting)
-    - [Test Alerts](#test-alerts)
-      - [Service Down](#service-down)
-      - [High Load](#high-load)
-  - [Security Considerations](#security-considerations)
-  - [Troubleshooting](#troubleshooting)
-  	- [Mac Users](#mac-users)
+- [Overview](#a-prometheus--grafana-demo)
+- [Pre-requisites](#pre-requisites)
+- [Installation & Configuration](#installation--configuration)
+  - [Post Configuration](#post-configuration)
+  - [Import Dashboard](#import-dashboard)
+  - [Alerting](#alerting)
+  - [Test Alerts](#test-alerts)
+    - [Service Down](#service-down)
+    - [High Load](#high-load)
+- [Security Considerations](#security-considerations)
+- [Troubleshooting](#troubleshooting)
+  - [Mac Users](#mac-users)
 
 # A Prometheus & Grafana demo
 Here's a quick start tutorial using only docker and docker-compose to start-up a [Prometheus](http://prometheus.io/) demo on your local machine containing Prometheus, Grafana, cadvisor and node-exporter to monitor your Docker infrastructure and machine.
