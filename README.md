@@ -8,6 +8,8 @@
   	- [Import Dashboard](#import-dashboard)
     - [Alerting](#alerting)
     - [Test Alerts](#test-alerts)
+      - [Service Down](#service-down)
+      - [High Load](#high-load)
   - [Security Considerations](#security-considerations)
   - [Troubleshooting](#troubleshooting)
   	- [Mac Users](#mac-users)
@@ -97,7 +99,7 @@ View Alert Manager `http://localhost:9093`
 
 ### Test Alerts
 
-#### Service down
+#### Service Down
 A quick way to test the service down pre-configured alert is to stop a service. 
 
 * Stop the `node-exporter` container by running `docker stop node_exporter`.
@@ -107,7 +109,7 @@ A quick way to test the service down pre-configured alert is to stop a service.
 * You should notice shortly the alert arrive in Slack if you have configured the integration. 
 * To make everything go back to normal run `docker-compose up -d`.
 
-#### High load
+#### High Load
 This tutorial has a bash file to help testing high load. You can look trough it first to see what it, the short version is that it runs a busy loop on all your CPUs.
 
 * To test the high load alert run `./alert.sh`.
