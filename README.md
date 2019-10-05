@@ -1,27 +1,31 @@
 # Contents
 
-- Introduction
-  - [Overview](#a-prometheus--grafana-demo)
-  - [Pre-requisites](#pre-requisites)
-  - [Installation & Configuration](#installation--configuration)
-  	- [Post Configuration](#post-configuration)
-  	- [Alerting](#alerting)
-  	- [Test Alerts](#test-alerts)
-  	- [Import Dashboard](#import-dashboard)
-  - [Security Considerations](#security-considerations)
-  - [Troubleshooting](#troubleshooting)
-  	- [Mac Users](#mac-users)
+- [Overview](#a-prometheus--grafana-demo)
+- [Pre-requisites](#pre-requisites)
+- [Installation & Configuration](#installation--configuration)
+  - [Post Configuration](#post-configuration)
+  - [Import Dashboard](#import-dashboard)
+  - [Alerting](#alerting)
+  - [Test Alerts](#test-alerts)
+    - [Service Down](#service-down)
+    - [High Load](#high-load)
+- [Security Considerations](#security-considerations)
+- [Troubleshooting](#troubleshooting)
+  - [Mac Users](#mac-users)
 
 # A Prometheus & Grafana demo
-Here's a quick start using only docker and docker-compose to start-up a [Prometheus](http://prometheus.io/) demo on your local machine containing Prometheus, Grafana, cadvisor and node-exporter to monitor your Docker infrastructure and machine.
+Here's a quick start tutorial using only docker and docker-compose to start-up a [Prometheus](http://prometheus.io/) demo on your local machine containing Prometheus, Grafana, cadvisor and node-exporter to monitor your Docker infrastructure and machine.
 
-<img src="https://github.com/steiniche/prometheus/raw/master/images/Dashboard.png" width="1024" heighth="768">
+Prometheus and Grafana is a strong combo which can be used to monitor other things such as Kubernetes.
+If you want to know how to monitor Kubernetes and workloads with Promethus take a look at [Digital Oceans tutorial](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-prometheus-grafana-and-alertmanager-monitoring-stack-on-digitalocean-kubernetes).
+
+<img src="./images/dashboard.png" width="1024" heighth="768">
 
 # Pre-requisites
 Before we get started setting up the Prometheus demo ensure you install the latest version of [docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/) on your machine.
 
 # Installation & Configuration
-Clone the project locally to your machine. 
+Clone this project locally to your machine.
 
 If you would like to change which targets should be monitored or make configuration changes edit the `prometheus.yml` file. 
 The targets section is where you define what should be monitored by Prometheus. The names defined in this file are sourced from the service name in the docker-compose file. If you wish to change names of the services you can add the "container_name" parameter in the `docker-compose.yml` file.
@@ -41,14 +45,40 @@ Grafana is now accessible via: `http://localhost:3000`
 
 ## Post Configuration
 Now we need to create the Prometheus Datasource in order to connect Grafana to Prometheus 
-* Click the `Grafana` Menu at the top left corner (looks like a fireball)
-* Click `Data Sources`
-* Click the green button `Add Data Source`.
+* Click the `Gear` menu icon in the left side menu
+* Click `Add data source`
+* Fill the `URL` input box with `http://prometheus:9090`
+* Click `Save and Test`.
 
-<img src="https://github.com/steiniche/prometheus/raw/master/images/Add_Data_Source.png" width="400" heighth="400">
+<img src="./images/add-data-source.png" width="700" heighth="700">
+
+## Import Dashboard
+There are Dashboard templates included in this demo within the `dashboard` folder, to use them you can import them into grafana.
+
+Follow the step by step guide and use the images below it as a guide:
+
+* Click the `Plus sign` menu icon in the left side menu
+* Click `Import`
+* Click `Upload .json file`
+* Navigate to the `dashboards` folder and select a .json file to upload e.g. `docker.json`
+* In the prometheus selection box select `Prometheus`
+* Click import
+
+<img src="./images/import-dashboard.png" width="400" heighth="400">
+
+<img src="./images/select-prometheus.png" width="600" heighth="600">
+
+The dashboards are intended to help you get started with monitoring using Prometheus.
+There are different dashboards included in this tutorial:
+
+* Docker Dashboard based on cadvisor data - `dashboards/docker.json`
+* Alerting Dashboard - `dashboards/high-load-dashboard.json`
+* Prometheus 2 Dashboard - `dashboards/high-load-dashboard.json`
+* System monitoring Dashboard based on node exporter - `dashboards/system-monitoring.json`
 
 ## Alerting
-Alerting has been added to the stack with Slack integration. 2 Alerts have been added and are managed:
+Alerting has been added to the stack with Slack integration. 
+Two Alerts have been pre-configured and can by seen in:
 
 Alerts              - `prometheus/alert.rules`
 Slack configuration - `alertmanager/config.yml`
@@ -67,23 +97,23 @@ View Prometheus alerts `http://localhost:9090/alerts`
 View Alert Manager `http://localhost:9093`  
 
 ### Test Alerts
-A quick test for your alerts is to stop a service. Stop the node_exporter container and you should notice shortly the alert arrive in Slack. Also check the alerts in both the Alert Manager and Prometheus Alerts just to understand how they flow through the system.
 
-High load test alert - `docker run --rm -it busybox sh -c "while true; do :; done"`
+#### Service Down
+A quick way to test the service down pre-configured alert is to stop a service. 
 
-Let this run for a few minutes and you will notice the load alert appear. Then Ctrl+C to stop this container.
+* Stop the `node-exporter` container by running `docker stop node_exporter`.
+* Check the alerts in both the Alert Manager `http://localhost:9093` and Prometheus Alerts `http://localhost:9090/alerts` to understand how they flow through the system and what you can control where.
+* The alert will start by being `pending` which can only be seen in Prometheus Alerts `http://localhost:9090/alerts`.
+* This is because Prometheus will only sent the alert to Alert Manager `http://localhost:9093` when it is `active`, which in this case will take 2 minutes due to the configuration in `prometheus/alert.rules`.
+* You should notice shortly the alert arrive in Slack if you have configured the integration. 
+* To make everything go back to normal run `docker-compose up -d`.
 
-## Import Dashboard
-There are Dashboard templates included in this demo within the `dashboard` folder, simply import them into grafana.
+#### High Load
+This tutorial has a bash file to help testing high load. You can look trough it first to see what it, the short version is that it runs a busy loop on all your CPUs.
 
-<img src="https://github.com/steiniche/prometheus/raw/master/images/Import_Dashboard.png" width="400" heighth="400">
-
-The dashboards are intended to help you get started with monitoring using Prometheus.
-
-Docker Dashboard based on cadvisor data - `dashboards/docker.json`
-Alerting Dashboard - `dashboards/high-load-dashboard.json`
-Prometheus 2 Dashboard - `dashboards/high-load-dashboard.json`
-System monitoring Dashboard based on node exporter - `dashboards/system-monitoring.json`
+* To test the high load alert run `./alert.sh`.
+* Let this run for a few minutes and you will notice the load alert appear. 
+* Then press `any key` or `Ctrl+C` to the script this container.
 
 # Security Considerations
 This project is intended to be a quick-start to get up and running with Docker and Prometheus. Security has not been implemented in this project. It is the users responsability to implement sensible security practices.
