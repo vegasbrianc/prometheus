@@ -26,11 +26,11 @@ datasources:
   # <string> database name, if used
   database:
   # <bool> enable/disable basic auth
-  basicAuth: true
-  # <string> basic auth username
-  basicAuthUser: admin
-  # <string> basic auth password
-  basicAuthPassword: foobar
+  basicAuth: false
+  # <string> basic auth username, if used
+  basicAuthUser:
+  # <string> basic auth password, if used
+  basicAuthPassword:
   # <bool> enable/disable with credentials headers
   withCredentials:
   # <bool> mark as default datasource. Max one per org
