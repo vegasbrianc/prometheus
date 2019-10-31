@@ -1,4 +1,4 @@
-![](https://github.com/vegasbrianc/prometheus/workflows/prom-test/badge.svg)
+![](https://github.com/vegasbrianc/prometheus/workflows/prometheus%20test/badge.svg)
 
 # Contents
 
