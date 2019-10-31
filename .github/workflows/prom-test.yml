@@ -15,4 +15,4 @@ jobs:
     - name: chmod compose
       run:  sudo chmod +x /usr/local/bin/docker-compose
     - name: Build the Docker image
-      run: docke-compose up
+      run: docker-compose up
