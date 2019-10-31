@@ -25,8 +25,10 @@ services:
     links:
       - cadvisor:cadvisor
       - alertmanager:alertmanager
+      - pushgateway:pushgateway
     depends_on:
       - cadvisor
+      - pushgateway
     networks:
       - back-tier
     restart: always
@@ -102,3 +104,12 @@ services:
       - front-tier
     restart: always
 
+  pushgateway:
+    image: prom/pushgateway
+    restart: always
+    expose:
+      - 9091
+    ports:
+      - "9091:9091"
+    networks:
+      - back-tier
