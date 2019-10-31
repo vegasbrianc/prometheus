@@ -1,0 +1,14 @@
+name: prometheus test
+
+on: [push]
+
+jobs:
+
+  build:
+
+    runs-on: docker:compose
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the Docker image
+      run: docke-compose up
