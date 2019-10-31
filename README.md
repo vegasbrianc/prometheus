@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/vegasbrianc/prometheus.svg?branch=version-2)](https://travis-ci.org/vegasbrianc/prometheus)
+![](https://github.com/vegasbrianc/prometheus/workflows/prom-test/badge.svg)
 
 # Contents
 
