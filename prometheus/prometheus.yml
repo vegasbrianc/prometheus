@@ -62,12 +62,13 @@ scrape_configs:
       type: 'A'
       port: 9100
 
-  - job_name: 'pushgateway'
-    scrape_interval: 10s
-    dns_sd_configs:
-    - names:
-      - 'tasks.pushgateway'
-      type: 'A'
-      port: 9091
+#  - job_name: 'pushgateway'
+#    scrape_interval: 10s
+#    dns_sd_configs:
+#    - names:
+#      - 'tasks.pushgateway'
+#      type: 'A'
+#      port: 9091
+
 #     static_configs:
 #          - targets: ['node-exporter:9100']

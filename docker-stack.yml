@@ -25,7 +25,7 @@ services:
       - 9090:9090
     depends_on:
       - cadvisor
-      - pushgateway
+#      - pushgateway
     networks:
       - monitor-net
     deploy:
@@ -110,13 +110,13 @@ services:
       restart_policy:
         condition: on-failure
 
-  pushgateway:
-    image: prom/pushgateway
-    deploy:
-      mode: global
-      restart_policy:
-        condition: on-failure
-    ports:
-      - 9091:9091
-    networks:
-      - monitor-net
+#  pushgateway:
+#    image: prom/pushgateway
+#    deploy:
+#      mode: global
+#      restart_policy:
+#        condition: on-failure
+#    ports:
+#      - 9091:9091
+#    networks:
+#      - monitor-net
