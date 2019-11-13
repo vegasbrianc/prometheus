@@ -69,7 +69,7 @@ This dashboard is intended to help you get started with monitoring. If you have 
 
 Here's the Dashboard Template
 
-![Grafana Dashboard](https://github.com/vegasbrianc/prometheus/raw/version-2/images/Dashboard.png)
+![Grafana Dashboard](https://raw.githubusercontent.com/vegasbrianc/prometheus/master/images/Dashboard.png)
 
 Grafana Dashboard - `dashboards/Grana_Dashboad.json`
 Alerting Dashboard
@@ -107,7 +107,7 @@ Now we need to create the Prometheus Datasource in order to connect Grafana to P
 * Click `Data Sources`
 * Click the green button `Add Data Source`.
 
-<img src="https://github.com/vegasbrianc/prometheus/raw/version-2/images/Add_Data_Source.png" width="400" heighth="400">
+<img src="https://raw.githubusercontent.com/vegasbrianc/prometheus/master/images/Add_Data_Source.png" width="400" heighth="400">
 
 # Security Considerations
 This project is intended to be a quick-start to get up and running with Docker and Prometheus. Security has not been implemented in this project. It is the users responsability to implement Firewall/IpTables and SSL.
