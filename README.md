@@ -121,5 +121,10 @@ This project is intended to be a quick-start to get up and running with Docker a
 # Troubleshooting
 It appears some people have reported no data appearing in Grafana. If this is happening to you be sure to check the time range being queried within Grafana to ensure it is using Today's date with current time.
 
+## Reset
+If you want to get a clean start you can do a reset of this demo.
+To do a complete reset run `./reset.sh`.
+This will delete everything created by this demo including the volumes holding persistent data.
+
 ## Mac Users
 The node-exporter does not run the same as Mac and Linux. Node-Exporter is not designed to run on Mac and in fact cannot collect metrics from the Mac OS due to the differences between Mac and Linux OS's. I recommend you comment out the node-exporter section in the `docker-compose.yml` file and instead just use the cAdvisor. 
