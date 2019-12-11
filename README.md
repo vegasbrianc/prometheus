@@ -113,7 +113,7 @@ This tutorial has a bash file to help testing high load. You can look trough it 
 
 * To test the high load alert run `./alert.sh`.
 * Let this run for a few minutes and you will notice the load alert appear. 
-* Then press `any key` or `Ctrl+C` to the script this container.
+* Then press `any key` or `Ctrl+C` to cancel the script.
 
 # Security Considerations
 This project is intended to be a quick-start to get up and running with Docker and Prometheus. Security has not been implemented in this project. It is the users responsability to implement sensible security practices.
