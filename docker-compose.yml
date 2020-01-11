@@ -3,6 +3,7 @@ version: '3.7'
 volumes:
     prometheus_data: {}
     grafana_data: {}
+    grafana_config: {}
 
 networks:
   front-tier:
@@ -95,6 +96,7 @@ services:
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning/:/etc/grafana/provisioning/
+      - grafana_config:/etc/grafana
     env_file:
       - ./grafana/config.monitoring
     networks:
