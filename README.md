@@ -107,6 +107,8 @@ Now we need to create the Prometheus Datasource in order to connect Grafana to P
 * Click `Data Sources`
 * Click the green button `Add Data Source`.
 
+**Ensure the Datasource name `Prometheus`is using uppercase `P`**
+
 <img src="https://raw.githubusercontent.com/vegasbrianc/prometheus/master/images/Add_Data_Source.png" width="400" heighth="400">
 
 # Security Considerations
