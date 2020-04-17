@@ -140,7 +140,7 @@ services:
       - ./grafana/config.monitoring
     networks:
       - monitor-net
-    user: "104"
+    user: "472"
     deploy:
       placement:
         constraints:
