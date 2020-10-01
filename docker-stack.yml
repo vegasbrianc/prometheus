@@ -19,10 +19,13 @@ services:
       - '--storage.tsdb.path=/prometheus'
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
     ports:
       - 9090:9090
     depends_on:
       - cadvisor
+#      - pushgateway
     networks:
       - monitor-net
     deploy:
@@ -107,3 +110,13 @@ services:
       restart_policy:
         condition: on-failure
 
+#  pushgateway:
+#    image: prom/pushgateway
+#    deploy:
+#      mode: global
+#      restart_policy:
+#        condition: on-failure
+#    ports:
+#      - 9091:9091
+#    networks:
+#      - monitor-net
