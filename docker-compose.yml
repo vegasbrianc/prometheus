@@ -22,9 +22,6 @@ services:
             - '--web.console.templates=/usr/share/prometheus/consoles'
         ports:
             - 9090:9090
-        links:
-            - cadvisor:cadvisor
-            - alertmanager:alertmanager
         depends_on:
             - cadvisor
         networks:
