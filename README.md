@@ -17,7 +17,7 @@
 Here's a quick start tutorial using only docker and docker-compose to start-up a [Prometheus](http://prometheus.io/) demo on your local machine containing Prometheus, Grafana, cadvisor and node-exporter to monitor your Docker infrastructure and machine.
 
 Prometheus and Grafana is a strong combo which can be used to monitor other things such as Kubernetes.
-If you want to know how to monitor Kubernetes and workloads with Promethus take a look at [Digital Oceans tutorial](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-prometheus-grafana-and-alertmanager-monitoring-stack-on-digitalocean-kubernetes).
+If you want to know how to monitor Kubernetes and workloads with Prometheus take a look at [Digital Oceans tutorial](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-prometheus-grafana-and-alertmanager-monitoring-stack-on-digitalocean-kubernetes).
 
 <img src="./images/dashboard.png" width="1024" heighth="768">
 
@@ -26,7 +26,7 @@ Before we get started setting up the Prometheus demo ensure you install the late
 
 Currently the repo requires 18.06.0+ version of docker and 1.25.0+ of docker-compose as it uses version 3.7 of the compose file format.
 
-You can check your versions by running `docker --version` and "docker-compose --version"
+You can check your versions by running `docker --version` and `docker-compose --version`
 
 # Installation & Configuration
 Clone this project locally to your machine.
@@ -34,9 +34,11 @@ Clone this project locally to your machine.
 If you would like to change which targets should be monitored or make configuration changes edit the `prometheus.yml` file. 
 The targets section is where you define what should be monitored by Prometheus. The names defined in this file are sourced from the service name in the docker-compose file. If you wish to change names of the services you can add the "container_name" parameter in the `docker-compose.yml` file.
 
-This project contains sane defaults meaning that you can just go ahead and start it up by running the foloowing command:
+This project has sensible defaults meaning that you can just go ahead and start it up by running the following command:
 
     $ docker-compose up -d
+
+The above command will collect the latest docker images of the projects used in this repo.
 
 See what containers was started by running
 
