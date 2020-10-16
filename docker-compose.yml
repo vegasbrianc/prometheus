@@ -1,96 +1,94 @@
-version: '3.1'
+version: '3.7'
 
 volumes:
     prometheus_data: {}
     grafana_data: {}
 
 networks:
-  frontend:
-  backend:
+    frontend:
+    backend:
 
 services:
+    prometheus:
+        container_name: prometheus
+        image: prom/prometheus:latest
+        volumes:
+            - ./prometheus/:/etc/prometheus/
+            - prometheus_data:/prometheus
+        command:
+            - '--config.file=/etc/prometheus/prometheus.yml'
+            - '--storage.tsdb.path=/prometheus'
+            - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+            - '--web.console.templates=/usr/share/prometheus/consoles'
+        ports:
+            - 9090:9090
+        links:
+            - cadvisor:cadvisor
+            - alertmanager:alertmanager
+        depends_on:
+            - cadvisor
+        networks:
+            - backend
+        restart: always
 
-  prometheus:
-    container_name: prometheus
-    image: prom/prometheus
-    volumes:
-      - ./prometheus/:/etc/prometheus/
-      - prometheus_data:/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-      - '--web.console.templates=/usr/share/prometheus/consoles'
-    ports:
-      - 9090:9090
-    links:
-      - cadvisor:cadvisor
-      - alertmanager:alertmanager
-    depends_on:
-      - cadvisor
-    networks:
-      - backend
-    restart: always
+    node-exporter:
+        container_name: node-exporter
+        image: prom/node-exporter
+        volumes:
+            - /proc:/host/proc:ro
+            - /sys:/host/sys:ro
+            - /:/rootfs:ro
+        command:
+            - '--path.procfs=/host/proc'
+            - '--path.sysfs=/host/sys'
+            - --collector.filesystem.ignored-mount-points
+            - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+        ports:
+            - 9100:9100
+        networks:
+            - backend
+        restart: always
 
-  node-exporter:
-    container_name: node-exporter
-    image: prom/node-exporter
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-    command: 
-      - '--path.procfs=/host/proc' 
-      - '--path.sysfs=/host/sys'
-      - --collector.filesystem.ignored-mount-points
-      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
-    ports:
-      - 9100:9100
-    networks:
-      - backend
-    restart: always
+    alertmanager:
+        container_name: alertmanager
+        image: prom/alertmanager
+        ports:
+            - 9093:9093
+        volumes:
+            - ./alertmanager/:/etc/alertmanager/
+        networks:
+            - backend
+        restart: always
+        command:
+            - '--config.file=/etc/alertmanager/config.yml'
+            - '--storage.path=/alertmanager'
 
-  alertmanager:
-    container_name: alertmanager
-    image: prom/alertmanager
-    ports:
-      - 9093:9093
-    volumes:
-      - ./alertmanager/:/etc/alertmanager/
-    networks:
-      - backend
-    restart: always
-    command:
-      - '--config.file=/etc/alertmanager/config.yml'
-      - '--storage.path=/alertmanager'
+    cadvisor:
+        container_name: cadvisor
+        image: google/cadvisor
+        volumes:
+            - /:/rootfs:ro
+            - /var/run:/var/run:rw
+            - /sys:/sys:ro
+            - /var/lib/docker/:/var/lib/docker:ro
+        ports:
+            - 8080:8080
+        networks:
+            - backend
+        restart: always
 
-  cadvisor:
-    container_name: cadvisor
-    image: google/cadvisor
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-    ports:
-      - 8080:8080
-    networks:
-      - backend
-    restart: always
-
-  grafana:
-    container_name: grafana
-    image: grafana/grafana
-    depends_on:
-      - prometheus
-    ports:
-      - 3000:3000
-    volumes:
-      - grafana_data:/var/lib/grafana
-    env_file:
-      - config.monitoring
-    networks:
-      - backend
-      - frontend
-    restart: always
-
+    grafana:
+        container_name: grafana
+        image: grafana/grafana
+        depends_on:
+            - prometheus
+        ports:
+            - 3000:3000
+        volumes:
+            - grafana_data:/var/lib/grafana
+        env_file:
+            - config.monitoring
+        networks:
+            - backend
+            - frontend
+        restart: always

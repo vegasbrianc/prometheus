@@ -24,6 +24,10 @@ If you want to know how to monitor Kubernetes and workloads with Promethus take 
 # Pre-requisites
 Before we get started setting up the Prometheus demo ensure you install the latest version of [docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/) on your machine.
 
+Currently the repo requires 18.06.0+ version of docker and 1.25.0+ of docker-compose as it uses version 3.7 of the compose file format.
+
+You can check your versions by running `docker --version` and "docker-compose --version"
+
 # Installation & Configuration
 Clone this project locally to your machine.
 
