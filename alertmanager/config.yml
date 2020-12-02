@@ -1,8 +1,8 @@
- route:
-     receiver: 'slack'
+route:
+  receiver: 'slack'
 
- receivers:
-     - name: 'slack'
+receivers:
+  - name: 'slack'
 #       slack_configs:
 #           - send_resolved: true
 #             username: '<username>'
