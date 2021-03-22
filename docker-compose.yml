@@ -62,8 +62,8 @@ services:
       - 9187:9187
     networks:
       - back-tier
-    environment:
-      DATA_SOURCE_NAME: "postgresql://postgres:postgres@192.168.3.11:5432/postgres?sslmode=disable"
+    env_file:
+      - ./postgres-exporter/.env
   alertmanager:
     image: prom/alertmanager
     ports:
