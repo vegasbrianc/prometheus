@@ -114,7 +114,7 @@ services:
         condition: on-failure    
 
   cadvisor:
-    image: google/cadvisor
+    image: gcr.io/cadvisor/cadvisor
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
