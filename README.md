@@ -189,4 +189,4 @@ Several projects utilize this Prometheus stack. Here's the list of projects:
 * [internet monitoring](https://github.com/maxandersen/internet-monitoring) - Monitor your local network, internet connection and speed with Prometheus.
 * [Dockerize Your Dev](https://github.com/RiFi2k/dockerize-your-dev) - Docker compose a VM to get LetsEncrypt / NGINX proxy auto provisioning, ELK logging, Prometheus / Grafana monitoring, Portainer GUI, and more...
 
-*Have an intersting Project which use this Repo? Submit yours to the list*
+*Have an interesting Project which uses this Repo? Submit yours to the list*
