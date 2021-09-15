@@ -1,8 +1,8 @@
 version: '3.7'
 
 volumes:
-    prometheus_data: {}
-    grafana_data: {}
+  prometheus_data: {}
+  grafana_data: {}
 
 networks:
   front-tier:
@@ -20,22 +20,24 @@ services:
       - '--storage.tsdb.path=/prometheus'
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-admin-api'
+      - '--web.enable-lifecycle'
     ports:
       - 9090:9090
     links:
       - cadvisor:cadvisor
       - alertmanager:alertmanager
-#      - pushgateway:pushgateway
+    #      - pushgateway:pushgateway
     depends_on:
       - cadvisor
-#      - pushgateway
+    #      - pushgateway
     networks:
       - back-tier
     restart: always
-#    deploy:
-#      placement:
-#        constraints:
-#          - node.hostname == ${HOSTNAME}
+  #    deploy:
+  #      placement:
+  #        constraints:
+  #          - node.hostname == ${HOSTNAME}
 
   node-exporter:
     image: prom/node-exporter
@@ -43,8 +45,8 @@ services:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
-    command: 
-      - '--path.procfs=/host/proc' 
+    command:
+      - '--path.procfs=/host/proc'
       - '--path.sysfs=/host/sys'
       - --collector.filesystem.ignored-mount-points
       - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
@@ -68,12 +70,12 @@ services:
     command:
       - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/alertmanager'
-#    deploy:
-#      placement:
-#        constraints:
-#          - node.hostname == ${HOSTNAME}
+  #    deploy:
+  #      placement:
+  #        constraints:
+  #          - node.hostname == ${HOSTNAME}
   cadvisor:
-    image: google/cadvisor
+    image: gcr.io/cadvisor/cadvisor
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
@@ -86,24 +88,23 @@ services:
     restart: always
     deploy:
       mode: global
-
   grafana:
     image: grafana/grafana
     user: "472"
     depends_on:
       - prometheus
     ports:
-      - 3000:3000
+      - 80:3000
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning/:/etc/grafana/provisioning/
+      - ./grafana/config/grafana.ini:/etc/grafana/grafana.ini
     env_file:
       - ./grafana/config.monitoring
     networks:
       - back-tier
       - front-tier
     restart: always
-
 #  pushgateway:
 #    image: prom/pushgateway
 #    restart: always
