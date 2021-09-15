@@ -27,10 +27,10 @@ services:
     links:
       - cadvisor:cadvisor
       - alertmanager:alertmanager
-    #      - pushgateway:pushgateway
+#      - pushgateway:pushgateway
     depends_on:
       - cadvisor
-    #      - pushgateway
+#      - pushgateway
     networks:
       - back-tier
     restart: always
@@ -57,7 +57,24 @@ services:
     restart: always
     deploy:
       mode: global
-
+  postgres-exporter:
+    image: quay.io/prometheuscommunity/postgres-exporter
+    ports:
+      - 9187:9187
+    networks:
+      - back-tier
+    env_file:
+      - ./postgres-exporter/.env
+      -
+  elasticsearch-exporter:
+    image: justwatch/elasticsearch_exporter:1.1.0
+    command:
+      - '--es.uri=http://elastic:xxxxxxxxx@xxxxxxx:9200'
+    restart: always
+    ports:
+      - "9114:9114"
+    networks:
+      - back-tier
   alertmanager:
     image: prom/alertmanager
     ports:
@@ -82,7 +99,7 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
     ports:
-      - 8080:8080
+      - 8088:8080
     networks:
       - back-tier
     restart: always
