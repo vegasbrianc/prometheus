@@ -70,7 +70,7 @@ scrape_configs:
       - targets:
           - "api.workbench.dev.comiru.co.jp"
   - job_name: 'cloudamqp_exporter'
-    scrape_interval: 3s
+    scrape_interval: 5s
     metrics_path: "/api/cloudamqp/exporter"
     static_configs:
       - targets:
