@@ -44,6 +44,16 @@ scrape_configs:
   #    scrape_interval: 1s
   #    static_configs:
   #         - targets: ['10.0.0.136:8080']
+  - job_name: 'log-gen-exporter'
+    scrape_interval: 60s
+    metrics_path: "/metrics/log_gen"
+    static_configs:
+      - targets: ['workbench.dev.comiru.co.jp']
+
+  #  - job_name: 'postgresql-cadvisor'
+  #    scrape_interval: 1s
+  #    static_configs:
+  #         - targets: ['10.0.0.136:8080']
   - job_name: 'node-exporter'
     scrape_interval: 5s
     static_configs:
