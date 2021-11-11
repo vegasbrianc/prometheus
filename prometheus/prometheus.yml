@@ -45,7 +45,7 @@ scrape_configs:
   #    static_configs:
   #         - targets: ['10.0.0.136:8080']
   - job_name: 'log-gen-exporter'
-    scrape_interval: 60s
+    scrape_interval: 20s
     metrics_path: "/metrics/log_gen"
     static_configs:
       - targets: ['workbench.dev.comiru.co.jp']
