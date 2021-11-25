@@ -86,7 +86,12 @@ scrape_configs:
       - targets:
           - "api.workbench.dev.comiru.co.jp"
     #  - job_name: 'cadvisor'
-
+  - job_name: 'workbench_scraper_exporter'
+    scrape_interval: 300s
+    metrics_path: "/metrics/scraper"
+    static_configs:
+      - targets:
+          - "api.workbench.dev.comiru.co.jp"
     # Override the global default and scrape targets from this job every 5 seconds.
     #    scrape_interval: 5s
 
