@@ -87,8 +87,8 @@ scrape_configs:
           - "api.workbench.dev.comiru.co.jp"
     #  - job_name: 'cadvisor'
   - job_name: 'workbench_scraper_exporter'
-    scrape_interval: 300s
-    metrics_path: "/metrics/scraper/daily"
+    scrape_interval: 60s
+    metrics_path: "/metrics/scraper"
     static_configs:
       - targets:
           - "api.workbench.dev.comiru.co.jp"
