@@ -86,12 +86,12 @@ scrape_configs:
       - targets:
           - "api.workbench.dev.comiru.co.jp"
   - job_name: 'cloudamqp-production'
-    scrape_interval: 15s
+    scrape_interval: 30s
     static_configs:
       - targets:
           - "cloudamqp-exporter-production.dev.comiru.co.jp"
   - job_name: 'cloudamqp-staging'
-    scrape_interval: 15s
+    scrape_interval: 30s
     static_configs:
       - targets:
           - "cloudamqp-exporter-staging.dev.comiru.co.jp"
