@@ -85,7 +85,27 @@ scrape_configs:
     static_configs:
       - targets:
           - "api.workbench.dev.comiru.co.jp"
+  - job_name: 'cloudamqp-production'
+    scrape_interval: 15s
+    static_configs:
+      - targets:
+          - "cloudamqp-exporter-production.dev.comiru.co.jp"
+  - job_name: 'cloudamqp-staging'
+    scrape_interval: 15s
+    static_configs:
+      - targets:
+          - "cloudamqp-exporter-staging.dev.comiru.co.jp"
     #  - job_name: 'cadvisor'
+#  - job_name: 'cloudamqp'
+#    scrape_interval: 15s
+#    basic_auth:
+#      username: 'drurjtdn'
+#      password: 'bP1tVxurBTGE7j4Fin-2Mx0GgOW6F0RY'
+#    scheme: https #necessary for cloudamqp instances
+#    # metrics_path defaults to '/metrics', which is the one used by cloudamqp instances so no need to define.
+#    # static_configs allows specifying a list of targets and a common label set for them.
+#    static_configs:
+#      - targets: ['diligent-quail.rmq.cloudamqp.com']
   - job_name: 'workbench_scraper_exporter'
     scrape_interval: 15s
     metrics_path: "/metrics/scraper"

@@ -1,0 +1,68 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudamqp-exporter-staging
+spec:
+  selector:
+    matchLabels:
+      app: cloudamqp-exporter-staging
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cloudamqp-exporter-staging
+    spec:
+      containers:
+        - name: cloudamqp-exporter-staging
+          image: kbudde/rabbitmq-exporter
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9121
+              name: http
+              protocol: TCP
+          env:
+            - name: RABBIT_URL
+              value: "https://clam.rmq.cloudamqp.com"
+            - name: RABBIT_USER
+              value: "nedfkghv"
+            - name: RABBIT_PASSWORD
+              value: "27-9_FLd69GxUtS3O75z2PeNoGvQRRnt"
+            - name: PUBLISH_PORT
+              value: "9121"
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: cloudamqp-exporter-staging
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 9121
+      targetPort: http
+  selector:
+    app: cloudamqp-exporter-staging
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cloudamqp-exporter-staging
+spec:
+  defaultBackend:
+    service:
+      name: cloudamqp-exporter-staging
+      port:
+        number: 9121
+  rules:
+    - host: "cloudamqp-exporter-staging.dev.comiru.co.jp"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cloudamqp-exporter-staging
+                port:
+                  number: 9121
