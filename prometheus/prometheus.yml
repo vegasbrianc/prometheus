@@ -55,9 +55,38 @@ scrape_configs:
   #    static_configs:
   #         - targets: ['10.0.0.136:8080']
   - job_name: 'node-exporter'
-    scrape_interval: 5s
+    scrape_interval: 60s
     static_configs:
-      - targets: ['10.0.0.136:9100','10.0.0.111:9100']
+      - targets: ['10.0.0.136:9100']
+        labels:
+          instance: postgresql
+      - targets: ['10.0.0.111:9100']
+        labels:
+          instance: elk-prod
+      - targets: ['10.0.0.135:9100']
+        labels:
+          instance: chores
+      - targets: ['10.0.0.112:9100']
+        labels:
+          instance: elk-staging
+      - targets: ['10.0.0.132:9100']
+        labels:
+          instance: clickhouse
+      - targets: ['10.0.0.133:9100']
+        labels:
+          instance: redis
+      - targets: ['10.0.0.139:9100']
+        labels:
+          instance: elasticsearch
+      - targets: ['10.0.0.141:9100']
+        labels:
+          instance: k3s-01
+      - targets: ['10.0.0.142:9100']
+        labels:
+          instance: k3s-02
+      - targets: ['10.0.0.143:9100']
+        labels:
+          instance: k3s-03
   - job_name: 'redis_exporter'
     scrape_interval: 5s
     static_configs:
