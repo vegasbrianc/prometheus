@@ -1,1 +1,7 @@
+*.env
+.env*
+.idea
 .vscode/launch.json
+docker-compose-*.yml
+
+!.env.example

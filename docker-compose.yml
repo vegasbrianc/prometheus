@@ -24,21 +24,25 @@ services:
       - '--web.enable-admin-api'
       - '--web.enable-lifecycle'
     ports:
-      - 9090:9090
+      # - 9090:9090
+      - "${LOCAL_INNER_IP}:${PROMETHEUS_PORT}:9090"
+    environment:
+      LOCAL_INNER_IP: ${LOCAL_INNER_IP}
+      PROMETHEUS_PORT: ${PROMETHEUS_PORT}
     links:
       - cadvisor:cadvisor
       - alertmanager:alertmanager
-#      - pushgateway:pushgateway
+      # - pushgateway:pushgateway
     depends_on:
       - cadvisor
-#      - pushgateway
+      # - pushgateway
     networks:
       - back-tier
     restart: always
-  #    deploy:
-  #      placement:
-  #        constraints:
-  #          - node.hostname == ${HOSTNAME}
+    # deploy:
+    #   placement:
+    #     constraints:
+    #       - node.hostname == ${HOSTNAME}
 
   node-exporter:
     image: prom/node-exporter
@@ -52,25 +56,33 @@ services:
       - --collector.filesystem.ignored-mount-points
       - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
     ports:
-      - 9100:9100
+      # - 9100:9100
+      - "${LOCAL_INNER_IP}:${NODE_EXPORTER_PORT}:9100"
+    environment:
+      LOCAL_INNER_IP: ${LOCAL_INNER_IP}
+      NODE_EXPORTER_PORT: ${NODE_EXPORTER_PORT}
     networks:
       - back-tier
     restart: always
     deploy:
       mode: global
-#  elasticsearch-exporter:
-#    image: justwatch/elasticsearch_exporter:1.1.0
-#    command:
-#      - '--es.uri=http://elastic:xxxxxxxxx@xxxxxxx:9200'
-#    restart: always
-#    ports:
-#      - "9114:9114"
-#    networks:
-#      - back-tier
+  # elasticsearch-exporter:
+  #   image: justwatch/elasticsearch_exporter:1.1.0
+  #   command:
+  #     - '--es.uri=http://elastic:xxxxxxxxx@xxxxxxx:9200'
+  #   restart: always
+  #   ports:
+  #     - "9114:9114"
+  #   networks:
+  #     - back-tier
   alertmanager:
     image: prom/alertmanager
     ports:
-      - 9093:9093
+      # - 9093:9093
+      - "${LOCAL_INNER_IP}:${ALERT_MANAGER_PORT}:9093"
+    environment:
+      LOCAL_INNER_IP: ${LOCAL_INNER_IP}
+      ALERT_MANAGER_PORT: ${ALERT_MANAGER_PORT}
     volumes:
       - ./alertmanager/:/etc/alertmanager/
     networks:
@@ -79,10 +91,10 @@ services:
     command:
       - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/alertmanager'
-  #    deploy:
-  #      placement:
-  #        constraints:
-  #          - node.hostname == ${HOSTNAME}
+    # deploy:
+    #   placement:
+    #     constraints:
+    #       - node.hostname == ${HOSTNAME}
   cadvisor:
     image: gcr.io/cadvisor/cadvisor
     volumes:
@@ -91,7 +103,11 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
     ports:
-      - 8088:8080
+      # - 8088:8080
+      - "${LOCAL_INNER_IP}:${C_ADVISOR_PORT}:8080"
+    environment:
+      LOCAL_INNER_IP: ${LOCAL_INNER_IP}
+      C_ADVISOR_PORT: ${C_ADVISOR_PORT}
     networks:
       - back-tier
     restart: always
@@ -103,7 +119,11 @@ services:
     depends_on:
       - prometheus
     ports:
-      - 80:3000
+      # - 80:3000
+      - "${LOCAL_INNER_IP}:${GRAFANA_PORT}:3000"
+    environment:
+      LOCAL_INNER_IP: ${LOCAL_INNER_IP}
+      GRAFANA_PORT: ${GRAFANA_PORT}
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning/:/etc/grafana/provisioning/
@@ -114,12 +134,12 @@ services:
       - back-tier
       - front-tier
     restart: always
-#  pushgateway:
-#    image: prom/pushgateway
-#    restart: always
-#    expose:
-#      - 9091
-#    ports:
-#      - "9091:9091"
-#    networks:
-#      - back-tier
+  # pushgateway:
+  #   image: prom/pushgateway
+  #   restart: always
+  #   expose:
+  #     - 9091
+  #   ports:
+  #     - "9091:9091"
+  #   networks:
+  #     - back-tier
