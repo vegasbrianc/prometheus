@@ -1,4 +1,5 @@
-version: '3.7'
+# version: '3.7'
+version: '3.2'
 
 volumes:
   prometheus_data: {}
@@ -25,7 +26,7 @@ services:
       - '--web.enable-lifecycle'
     ports:
       # - 9090:9090
-      - "${LOCAL_INNER_IP}:${PROMETHEUS_PORT}:9090"
+      - "${PROMETHEUS_PORT}:9090"
     environment:
       LOCAL_INNER_IP: ${LOCAL_INNER_IP}
       PROMETHEUS_PORT: ${PROMETHEUS_PORT}
@@ -57,15 +58,15 @@ services:
       - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
     ports:
       # - 9100:9100
-      - "${LOCAL_INNER_IP}:${NODE_EXPORTER_PORT}:9100"
+      - "${NODE_EXPORTER_PORT}:9100"
     environment:
       LOCAL_INNER_IP: ${LOCAL_INNER_IP}
       NODE_EXPORTER_PORT: ${NODE_EXPORTER_PORT}
     networks:
       - back-tier
     restart: always
-    deploy:
-      mode: global
+    # deploy:
+    #   mode: global
   # elasticsearch-exporter:
   #   image: justwatch/elasticsearch_exporter:1.1.0
   #   command:
@@ -79,7 +80,7 @@ services:
     image: prom/alertmanager
     ports:
       # - 9093:9093
-      - "${LOCAL_INNER_IP}:${ALERT_MANAGER_PORT}:9093"
+      - "${ALERT_MANAGER_PORT}:9093"
     environment:
       LOCAL_INNER_IP: ${LOCAL_INNER_IP}
       ALERT_MANAGER_PORT: ${ALERT_MANAGER_PORT}
@@ -104,15 +105,15 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
     ports:
       # - 8088:8080
-      - "${LOCAL_INNER_IP}:${C_ADVISOR_PORT}:8080"
+      - "${C_ADVISOR_PORT}:8080"
     environment:
       LOCAL_INNER_IP: ${LOCAL_INNER_IP}
       C_ADVISOR_PORT: ${C_ADVISOR_PORT}
     networks:
       - back-tier
     restart: always
-    deploy:
-      mode: global
+    # deploy:
+    #   mode: global
   grafana:
     image: grafana/grafana
     user: "472"
@@ -120,7 +121,7 @@ services:
       - prometheus
     ports:
       # - 80:3000
-      - "${LOCAL_INNER_IP}:${GRAFANA_PORT}:3000"
+      - "${GRAFANA_PORT}:3000"
     environment:
       LOCAL_INNER_IP: ${LOCAL_INNER_IP}
       GRAFANA_PORT: ${GRAFANA_PORT}
