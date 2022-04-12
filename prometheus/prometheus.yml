@@ -39,144 +39,93 @@ scrape_configs:
   - job_name: 'heroku-exporter'
     scrape_interval: 10s
     static_configs:
-      # - targets: ['workbench.dev.comiru.co.jp']
-      - targets: ['192.168.190.226:40044']
+      - targets: ['workbench.dev.comiru.co.jp']
 
-  #  - job_name: 'postgresql-cadvisor'
-  #    scrape_interval: 1s
-  #    static_configs:
-  #      - targets: ['10.0.0.136:8080']
+  # - job_name: 'postgresql-cadvisor'
+  #   scrape_interval: 1s
+  #   static_configs:
+  #     - targets: ['10.0.0.136:8080']
 
   - job_name: 'log-gen-exporter'
     scrape_interval: 20s
     metrics_path: "/metrics/log_gen"
     static_configs:
-      # - targets: ['workbench.dev.comiru.co.jp']
-      - targets: ['192.168.190.226:40044']
+      - targets: ['workbench.dev.comiru.co.jp']
 
-  - job_name: 'heroku-app-dyno-update-status-exporter'
-    scrape_interval: 180s
-    metrics_path: "/metrics/heroku_app_dyno_update_status"
-    static_configs:
-      # - targets: ['workbench.dev.comiru.co.jp']
-      - targets: ['192.168.190.226:40044']
-
-  - job_name: 'heroku-app-dyno-router-latency-exporter'
-    scrape_interval: 180s
-    metrics_path: "/metrics/heroku_app_dyno_router_latency"
-    static_configs:
-      # - targets: ['workbench.dev.comiru.co.jp']
-      - targets: ['192.168.190.226:40044']
-
-  - job_name: 'heroku-app-dyno-router-status-exporter'
-    scrape_interval: 180s
-    metrics_path: "/metrics/heroku_app_dyno_router_status"
-    static_configs:
-      # - targets: ['workbench.dev.comiru.co.jp']
-      - targets: ['192.168.190.226:40044']
-
-  - job_name: 'heroku-db-lock-status-exporter'
-    scrape_interval: 300s
-    metrics_path: "/metrics/heroku_db_lock_status"
-    static_configs:
-      # - targets: ['workbench.dev.comiru.co.jp']
-      - targets: ['192.168.190.226:40044']
-
-  #  - job_name: 'postgresql-cadvisor'
-  #    scrape_interval: 1s
-  #    static_configs:
-  #         - targets: ['10.0.0.136:8080']
+  # - job_name: 'postgresql-cadvisor'
+  #   scrape_interval: 1s
+  #   static_configs:
+  #     - targets: ['10.0.0.136:8080']
   - job_name: 'node-exporter'
     scrape_interval: 15s
     static_configs:
-      # - targets: ['10.0.0.136:9100']
-      - targets: [ 'node-exporter:9100' ]
+      - targets: ['10.0.0.136:9100']
         labels:
-          instance: prometheus
-#      # - targets: ['10.0.0.136:9100']
-#      - targets: ['node-exporter:9100']
-#        labels:
-#          instance: postgresql
-#      # - targets: ['10.0.0.111:9100']
-#      - targets: ['node-exporter:9100']
-#        labels:
-#          instance: elk-prod
-#      # - targets: ['10.0.0.135:9100']
-#      - targets: ['node-exporter:9100']
-#        labels:
-#          instance: chores
-#      # - targets: ['10.0.0.112:9100']
-#      - targets: ['node-exporter:9100']
-#        labels:
-#          instance: elk-staging
-#      # - targets: ['10.0.0.132:9100']
-#      - targets: ['node-exporter:9100']
-#        labels:
-#          instance: clickhouse
-#      # - targets: ['10.0.0.133:9100']
-#      - targets: ['node-exporter:9100']
-#        labels:
-#          instance: redis
-#      # - targets: ['10.0.0.139:9100']
-#      - targets: ['node-exporter:9100']
-#        labels:
-#          instance: elasticsearch
-#      # - targets: ['10.0.0.141:9100']
-#      - targets: ['node-exporter:9100']
-#        labels:
-#          instance: k3s-01
-#      # - targets: ['10.0.0.142:9100']
-#      - targets: ['node-exporter:9100']
-#        labels:
-#          instance: k3s-02
-#      # - targets: ['10.0.0.143:9100']
-#      - targets: ['node-exporter:9100']
-#        labels:
-#          instance: k3s-03
+          instance: postgresql
+      - targets: ['10.0.0.111:9100']
+        labels:
+          instance: elk-prod
+      - targets: ['10.0.0.135:9100']
+        labels:
+          instance: chores
+      - targets: ['10.0.0.112:9100']
+        labels:
+          instance: elk-staging
+      - targets: ['10.0.0.132:9100']
+        labels:
+          instance: clickhouse
+      - targets: ['10.0.0.133:9100']
+        labels:
+          instance: redis
+      - targets: ['10.0.0.139:9100']
+        labels:
+          instance: elasticsearch
+      - targets: ['10.0.0.141:9100']
+        labels:
+          instance: k3s-01
+      - targets: ['10.0.0.142:9100']
+        labels:
+          instance: k3s-02
+      - targets: ['10.0.0.143:9100']
+        labels:
+          instance: k3s-03
   - job_name: 'redis_exporter'
     scrape_interval: 5s
     static_configs:
       - targets:
-        # - "redis-exporter.dev.comiru.co.jp"
-        - "192.168.190.226:9121"
+        - "redis-exporter.dev.comiru.co.jp"
   - job_name: 'redis_linode_exporter'
     scrape_interval: 5s
     static_configs:
       - targets:
-        # - "redis-linode-exporter.dev.comiru.co.jp"
-        - "192.168.190.226:9121"
-  # - job_name: 'cloudamqp_exporter'
-  #   scrape_interval: 5s
-  #   static_configs:
-  #     - targets:
-  #       - "cloudamqp-exporter.dev.comiru.co.jp"
-
+        - "redis-linode-exporter.dev.comiru.co.jp"
+  #  - job_name: 'cloudamqp_exporter'
+  #    scrape_interval: 5s
+  #    static_configs:
+  #      - targets:
+  #        - "cloudamqp-exporter.dev.comiru.co.jp"
   - job_name: 'workbench_exporter'
     scrape_interval: 5s
     metrics_path: "/api/queues/metrics"
     static_configs:
-      # - targets:
-      #   - "api.workbench.dev.comiru.co.jp"
-      - targets: ['192.168.190.226:40044']
+      - targets:
+        - "api.workbench.dev.comiru.co.jp"
   - job_name: 'cloudamqp_exporter'
     scrape_interval: 5s
     metrics_path: "/api/cloudamqp/exporter"
     static_configs:
-      # - targets:
-      #   - "api.workbench.dev.comiru.co.jp"
-      - targets: ['192.168.190.226:40044']
-
-#  - job_name: 'cloudamqp-production'
-#    scrape_interval: 30s
-#    static_configs:
-#      - targets:
-#        - "cloudamqp-exporter-production.dev.comiru.co.jp"
-
-#  - job_name: 'cloudamqp-staging'
-#    scrape_interval: 30s
-#    static_configs:
-#      - targets:
-#        - "cloudamqp-exporter-staging.dev.comiru.co.jp"
+      - targets:
+        - "api.workbench.dev.comiru.co.jp"
+  - job_name: 'cloudamqp-production'
+    scrape_interval: 30s
+    static_configs:
+      - targets:
+        - "cloudamqp-exporter-production.dev.comiru.co.jp"
+  - job_name: 'cloudamqp-staging'
+    scrape_interval: 30s
+    static_configs:
+      - targets:
+        - "cloudamqp-exporter-staging.dev.comiru.co.jp"
 
   # - job_name: 'cadvisor'
   # - job_name: 'cloudamqp'
@@ -194,10 +143,9 @@ scrape_configs:
     scrape_interval: 15s
     metrics_path: "/metrics/scraper"
     static_configs:
-      # - targets:
-      #   - "api.workbench.dev.comiru.co.jp"
-      #   # - "192.168.1.5:40044"
-      - targets: ['192.168.190.226:40044']
+      - targets:
+        - "api.workbench.dev.comiru.co.jp"
+        # - "192.168.1.5:40044"
 
     # Override the global default and scrape targets from this job every 5 seconds.
     #    scrape_interval: 5s
