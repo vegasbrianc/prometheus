@@ -52,6 +52,30 @@ scrape_configs:
     static_configs:
       - targets: ['workbench.dev.comiru.co.jp']
 
+  - job_name: 'heroku-app-dyno-update-status-exporter'
+    scrape_interval: 180s
+    metrics_path: "/metrics/heroku_app_dyno_update_status"
+    static_configs:
+      - targets: ['workbench.dev.comiru.co.jp']
+
+  - job_name: 'heroku-app-dyno-router-latency-exporter'
+    scrape_interval: 180s
+    metrics_path: "/metrics/heroku_app_dyno_router_latency"
+    static_configs:
+      - targets: ['workbench.dev.comiru.co.jp']
+
+  - job_name: 'heroku-app-dyno-router-status-exporter'
+    scrape_interval: 180s
+    metrics_path: "/metrics/heroku_app_dyno_router_status"
+    static_configs:
+      - targets: ['workbench.dev.comiru.co.jp']
+
+  - job_name: 'heroku-db-lock-status-exporter'
+    scrape_interval: 300s
+    metrics_path: "/metrics/heroku_db_lock_status"
+    static_configs:
+      - targets: ['workbench.dev.comiru.co.jp']
+
   # - job_name: 'postgresql-cadvisor'
   #   scrape_interval: 1s
   #   static_configs:
