@@ -71,7 +71,7 @@ Here's the Dashboard Template
 
 ![Grafana Dashboard](https://raw.githubusercontent.com/vegasbrianc/prometheus/master/images/Dashboard.png)
 
-Grafana Dashboard - `dashboards/Grana_Dashboad.json`
+Grafana Dashboard - `dashboards/Grafana_Dashboard.json`
 Alerting Dashboard
 
 
