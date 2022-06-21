@@ -19,6 +19,7 @@ jobs:
     - name: test docker ps
       run: docker ps
     - name: test docker ps 2
+      run: docker ps
     - name: test docker ps 3
       run: docker ps
     - name: test prom
