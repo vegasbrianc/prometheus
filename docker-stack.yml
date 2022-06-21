@@ -10,7 +10,7 @@ networks:
 services:
 
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:v2.36.2
     volumes:
       - ./prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
@@ -36,7 +36,7 @@ services:
         condition: on-failure
 
   node-exporter:
-    image: prom/node-exporter
+    image: quay.io/prometheus/node-exporter:latest
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro

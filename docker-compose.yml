@@ -11,7 +11,7 @@ networks:
 services:
 
   prometheus:
-    image: prom/prometheus:v2.1.0
+    image: prom/prometheus:v2.36.2
     volumes:
       - ./prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
@@ -38,12 +38,14 @@ services:
 #          - node.hostname == ${HOSTNAME}
 
   node-exporter:
-    image: prom/node-exporter
+    image: quay.io/prometheus/node-exporter:latest
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
+      - /:/host:ro,rslave
     command: 
+      - '--path.rootfs=/host'
       - '--path.procfs=/host/proc' 
       - '--path.sysfs=/host/sys'
       - --collector.filesystem.ignored-mount-points
