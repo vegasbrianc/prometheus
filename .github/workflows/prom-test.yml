@@ -16,5 +16,11 @@ jobs:
       run:  sudo chmod +x /usr/local/bin/docker-compose
     - name: Build the Docker image
       run: docker-compose up -d
+    - name: test docker ps
+      run: docker ps
+    - name: test docker ps 2
+    - name: test docker ps 3
+      run: docker ps
     - name: test prom
       run: while ! curl --retry 10 --retry-delay 5 -v 0.0.0.0:9090 >/dev/null; do sleep 1; done
+
