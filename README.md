@@ -63,7 +63,7 @@ If you would like to automate the installation of additional dashboards just cop
 
 ## Install Dashboards the old way
 
-I created a Dashboard template which is available on [Grafana Docker Dashboard](https://grafana.net/dashboards/179). Simply select Import from the Grafana menu -> Dashboards -> Import and provide the Dashboard ID [#179](https://grafana.net/dashboards/179)
+I created a Dashboard template which is available on [Grafana Docker Dashboard](https://grafana.com/grafana/dashboards/179-docker-prometheus-monitoring/). Simply select Import from the Grafana menu -> Dashboards -> Import and provide the Dashboard ID [#179](https://grafana.com/grafana/dashboards/179-docker-prometheus-monitoring/)
 
 This dashboard is intended to help you get started with monitoring. If you have any changes you would like to see in the Dashboard let me know so I can update Grafana site as well.
 
